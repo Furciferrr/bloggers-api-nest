@@ -25,6 +25,13 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+You need to add next variables:
+MAIL_APP_PASSWORD
+MONGO_URI
+MONGO_URI_LOCAL
+JWT_SECRET
+JWT_EXPIRATION
+JWT_REFRESH_EXPIRATION
 
 ## Installation
 
