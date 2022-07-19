@@ -3,10 +3,21 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/users/users.module';
 import { MailSender } from '../adapters/email-adapter';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  RequestAttempt,
+  RequestAttemptSchema,
+} from './entities/requestAttemption.schema';
+import { CountAttemptGuard } from 'src/guards/countAttemptions.guard';
 
 @Module({
-  imports: [UsersModule],
-  providers: [AuthService, MailSender],
+  imports: [
+    UsersModule,
+    MongooseModule.forFeature([
+      { name: RequestAttempt.name, schema: RequestAttemptSchema },
+    ]),
+  ],
+  providers: [AuthService, MailSender, CountAttemptGuard],
   controllers: [AuthController],
 })
 export class AuthModule {}

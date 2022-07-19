@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { BloggersService } from './bloggers.service';
 import { CreateBloggerDto } from './dto/create-blogger.dto';
@@ -21,13 +22,28 @@ export class BloggersController {
   }
 
   @Get()
-  findAll() {
-    return this.bloggersService.findAll();
+  async findAll(
+    @Query()
+    query: {
+      pageNumber: string;
+      pageSize: string;
+      searchNameTerm?: string;
+    },
+  ) {
+    const pageNumber = query.pageNumber as string;
+    const pageSize = query.pageSize as string;
+    const searchTerm = query.searchNameTerm as string;
+    const bloggers = await this.bloggersService.findAll(
+      +pageNumber,
+      +pageSize,
+      searchTerm,
+    );
+    return bloggers;
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.bloggersService.findOne(+id);
+    return this.bloggersService.findOne(id);
   }
 
   @Patch(':id')
@@ -37,6 +53,6 @@ export class BloggersController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.bloggersService.remove(+id);
+    return this.bloggersService.remove(id);
   }
 }

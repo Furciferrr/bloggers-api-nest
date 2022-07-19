@@ -7,10 +7,16 @@ import {
   HttpException,
   HttpStatus,
   Get,
+  UsePipes,
+  Req,
+  HttpCode,
+  UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Request, Response } from 'express';
 import { Cookies } from 'src/decorators/cookie.decorator';
 import { User } from 'src/decorators/user.decorator';
+import { CountAttemptGuard } from 'src/guards/countAttemptions.guard';
 import { CreateUserDto } from 'src/users/dto/createUser.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
@@ -24,6 +30,7 @@ export class AuthController {
   ) {}
 
   @Post('/registration')
+  @UseGuards(CountAttemptGuard)
   async registrationUser(@Body() body: CreateUserDto) {
     const result = await this.userService.createUser(body);
     if (result.resultCode === 0) {
@@ -34,6 +41,7 @@ export class AuthController {
   }
 
   @Post('/login')
+  @UsePipes(CountAttemptGuard)
   async login(
     @Body() body: LoginUserDto,
     @Res({ passthrough: true }) response: Response,
@@ -54,6 +62,7 @@ export class AuthController {
   }
 
   @Post('/registration-confirmation')
+  @UsePipes(CountAttemptGuard)
   async confirmation(@Body() body: ConfirmEmailDto) {
     const result = await this.userService.confirmEmail(body.code);
     if (result) {
@@ -66,6 +75,7 @@ export class AuthController {
   }
 
   @Post('/registration-email-resending')
+  @UsePipes(CountAttemptGuard)
   async resendingEmail(@Body() body: ResendEmailDto) {
     const result = await this.authService.resendingEmail(body.email);
     if (result.resultCode === 0) {
@@ -75,19 +85,12 @@ export class AuthController {
     }
   }
 
-  @Post('/logout')
+  @Post('/refresh-token')
   async refreshToken(
     @Cookies('refreshToken') refreshToken: string,
     @Res({ passthrough: true }) response: Response,
   ) {
-    //const result = await this.authService.refreshToken(refreshToken);
-    const result = {
-      resultCode: 0,
-      data: {
-        accessToken: 'accessToken',
-        refreshToken: 'refreshToken',
-      },
-    };
+    const result = await this.authService.refreshToken(refreshToken);
     if (result.resultCode === 1) {
       throw new HttpException('UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
     }
@@ -99,6 +102,7 @@ export class AuthController {
   }
 
   @Get('/me')
+  @UseGuards(AuthGuard)
   async me(@User('id') userId: string) {
     const user = await this.userService.getUserById(userId);
     if (!user) {
@@ -111,19 +115,14 @@ export class AuthController {
     };
   }
 
-  async logout(req: Request, res: Response) {
-    //const result = await this.authService.logout(req.cookies.refreshToken);
-    const result = {
-      resultCode: 0,
-      data: {
-        accessToken: 'accessToken',
-        refreshToken: 'refreshToken',
-      },
-    };
+  @Post('/logout')
+  @HttpCode(204)
+  async logout(@Req() request: Request) {
+    const result = await this.authService.logout(request.cookies.refreshToken);
     if (result.resultCode === 0) {
-      return res.clearCookie('refreshToken').sendStatus(204);
+      delete request.cookies;
     } else {
-      return res.sendStatus(401);
+      throw new HttpException('UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
     }
   }
 }

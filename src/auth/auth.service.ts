@@ -8,6 +8,13 @@ import { UserDBType } from 'src/users/types';
 import { UsersService } from 'src/users/users.service';
 import { ErrorType, ServiceResponseType } from 'src/types';
 import { MailSender } from 'src/adapters/email-adapter';
+import { InjectModel } from '@nestjs/mongoose';
+import {
+  RequestAttempt,
+  RequestAttemptDocument,
+} from './entities/requestAttemption.schema';
+import { Model } from 'mongoose';
+import { RequestAttemptType } from './types';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +23,8 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
     private readonly mailSender: MailSender,
+    @InjectModel(RequestAttempt.name)
+    private requestAttemptModel: Model<RequestAttemptDocument>,
   ) {}
 
   async resendingEmail(
@@ -156,7 +165,7 @@ export class AuthService {
     };
   }
 
-  async logout(refreshToken: string): Promise<ServiceResponseType<unknown>> {
+  async logout(refreshToken: string): Promise<ServiceResponseType<object>> {
     const user = await this.checkRefreshToken(refreshToken);
     if (!user) {
       return { resultCode: 1, data: {} };
@@ -169,5 +178,30 @@ export class AuthService {
       return { resultCode: 1, data: {} };
     }
     return { resultCode: 0, data: {} };
+  }
+
+  async getRequestAttemptsBetweenToDates(
+    ip: string,
+    startDate: Date,
+    endDate: Date,
+    path: string,
+  ): Promise<Array<RequestAttemptType>> {
+    const result = await this.requestAttemptModel
+      .find({ ip, date: { $gte: startDate, $lte: endDate }, path })
+      .select(['-_id', '-__v'])
+      .lean();
+    return result;
+  }
+
+  async createRequestAttempt(
+    requestAttempt: RequestAttemptType,
+  ): Promise<boolean> {
+    const result = await this.requestAttemptModel.create(requestAttempt);
+    return !!result;
+  }
+
+  async deleteAllRequests(): Promise<any> {
+    const result = await this.requestAttemptModel.remove({});
+    return result;
   }
 }
