@@ -69,7 +69,7 @@ export class UsersService {
   async createUser(
     user: CreateUserDto,
   ): Promise<
-    | ({ result: UserViewType } & { resultCode: 0 })
+    | ({ result: UserDBType } & { resultCode: 0 })
     | (ErrorType & { resultCode: 1 })
   > {
     const isEmailExist = await this.userRepository.getUserByEmail(user.email);
@@ -106,30 +106,11 @@ export class UsersService {
       emailConfirmation: {
         confirmationCode: uuidv4(),
         expirationDate: add(new Date(), { hours: 1, minutes: 2 }),
-        isConfirmed: true,
+        isConfirmed: false,
       },
       tokenVersion: 1,
     };
     const result = await this.userRepository.createUser(newUser);
-
-    /* try {
-      await this.mailSender.sendEmail(
-        user.email,
-        `code=${newUser.emailConfirmation.confirmationCode}`
-      );
-    } catch (error) {
-      console.error("service", error);
-      await this.userRepository.deleteUserById(newUser.id);
-      return {
-        errorsMessages: [
-          {
-            message: "Something went wrong",
-            field: "",
-          },
-        ],
-        resultCode: 1,
-      };
-    } */
 
     return { result, resultCode: 0 };
   }

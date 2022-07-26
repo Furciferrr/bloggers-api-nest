@@ -1,9 +1,9 @@
+import { BloggerDBType } from './types/index';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blogger, BloggerDocument } from './entities/blogger.entity';
 import { Model } from 'mongoose';
-import { UpdateBloggerDto } from './dto/update-blogger.dto';
-import { CreateBloggerDto } from './dto/create-blogger.dto';
+import { UpdateBloggerDto } from './dto/update-blogger.dto';;
 
 @Injectable()
 export class BloggerRepository {
@@ -47,7 +47,7 @@ export class BloggerRepository {
 
     return result.matchedCount === 1;
   }
-  async createBlogger(blogger: CreateBloggerDto): Promise<any> {
+  async createBlogger(blogger: BloggerDBType): Promise<BloggerDBType> {
     await this.bloggersCollection.create(blogger);
     return blogger;
   }

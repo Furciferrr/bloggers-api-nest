@@ -15,5 +15,6 @@ import { PostsModule } from 'src/posts/posts.module';
   ],
   controllers: [BloggersController],
   providers: [BloggersService, BloggerRepository],
+  exports: [BloggerRepository],
 })
 export class BloggersModule {}

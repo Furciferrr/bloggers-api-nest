@@ -88,10 +88,9 @@ export class UserRepository implements IUserRepository {
     return result.deletedCount === 1;
   }
 
-  async createUser(user: UserDBType): Promise<UserViewType> {
+  async createUser(user: UserDBType): Promise<UserDBType> {
     await this.userModel.create(user);
-    const { id, login } = user;
-    return { id, login };
+    return user;
   }
 
   async deleteAllUsers(): Promise<any> {

@@ -6,6 +6,7 @@ import { User, UserSchema } from './user.schema';
 import { UserRepository } from './users.repository';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { MailSender } from 'src/adapters/email-adapter';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { UsersService } from './users.service';
     ConfigModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, AuthGuard, UserRepository],
+  providers: [UsersService, AuthGuard, UserRepository, MailSender],
   exports: [UsersService, UserRepository],
 })
 export class UsersModule {}

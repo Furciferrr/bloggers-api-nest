@@ -16,19 +16,19 @@ export class MailSender implements IMailSender {
         pass: process.env.MAIL_APP_PASSWORD,
       },
     });
-    console.log(html, emailAddress)
+    console.log(html, emailAddress);
     //return {} as SMTPTransport.SentMessageInfo
 
     // send mail with defined transport object
-    /* let info = await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: '"Super Service" <foo@example.com>', // sender address
       to: emailAddress,
-      subject: "Hello ✔", // Subject line
-      text: "Hello", // plain text body
+      subject: 'Hello ✔', // Subject line
+      text: 'Hello', // plain text body
       html: `<a href="https://some-front.com/confirm-registration?${html}">https://some-front.com/confirm-registration?${html}</a>`, // html body
-    }); */
+    });
 
-    //return info;
-    return {} as SMTPTransport.SentMessageInfo;
+    return info;
+    //return {} as SMTPTransport.SentMessageInfo;
   }
 }

@@ -21,12 +21,14 @@ import { CreateUserDto } from 'src/users/dto/createUser.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
 import { ConfirmEmailDto, LoginUserDto, ResendEmailDto } from './dto/index.dto';
+import { MailSender } from 'src/adapters/email-adapter';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly userService: UsersService,
     private readonly authService: AuthService,
+    private readonly mailSender: MailSender,
   ) {}
 
   @Post('/registration')
@@ -34,6 +36,16 @@ export class AuthController {
   async registrationUser(@Body() body: CreateUserDto) {
     const result = await this.userService.createUser(body);
     if (result.resultCode === 0) {
+      try {
+        await this.mailSender.sendEmail(
+          result.result.email,
+          `code=${result.result.emailConfirmation.confirmationCode}`,
+        );
+      } catch (error) {
+        console.error('service', error);
+        await this.userService.deleteUserById(result.result.id);
+        throw new HttpException('BAD_REQUEST', HttpStatus.BAD_REQUEST);
+      }
       return;
     } else {
       throw new BadRequestException(result.errorsMessages);
@@ -109,7 +121,6 @@ export class AuthController {
       throw new HttpException('NOT FOUND', HttpStatus.NOT_FOUND);
     }
     return {
-      //email: user.email,
       login: user.login,
       userId: user.id,
     };
