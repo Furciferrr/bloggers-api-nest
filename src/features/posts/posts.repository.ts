@@ -20,7 +20,6 @@ export class PostRepository implements IPostRepository {
       .limit(pageSize)
       .select(['-_id', '-__v', '-reactions'])
       .lean();
-    //.populate('-_id -__v -target');
   }
 
   async getTotalCount(): Promise<number> {
