@@ -2,16 +2,21 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './features/users/users.module';
+import { AuthModule } from './features/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthMiddleware } from './middlewares/authMiddleware';
-import { BloggersModule } from './bloggers/bloggers.module';
-import { PostsModule } from './posts/posts.module';
-import { CommentsModule } from './comments/comments.module';
+import { BloggersModule } from './features/bloggers/bloggers.module';
+import { PostsModule } from './features/posts/posts.module';
+import { CommentsModule } from './features/comments/comments.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ReactionsModule } from './features/reactions/reactions.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import ormConfig from './ormConfig';
 
 @Module({
   imports: [
+    TypeOrmModule.forRoot(ormConfig),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -29,6 +34,11 @@ import { CommentsModule } from './comments/comments.module';
     BloggersModule,
     PostsModule,
     CommentsModule,
+    ThrottlerModule.forRoot({
+      ttl: 10,
+      limit: 5,
+    }),
+    ReactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
