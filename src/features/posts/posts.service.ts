@@ -78,6 +78,7 @@ export class PostsService implements IPostService {
     const myStatus = await this.reactionService.getReactionByUserIdAndPostId(
       userId,
       postObjectId,
+      'post',
     );
     const newestLikes = await this.reactionService.getNewestReactionsByPostId(
       postId,
@@ -148,7 +149,11 @@ export class PostsService implements IPostService {
       return false;
     }
     const userReaction =
-      await this.reactionService.getReactionByUserIdAndPostId(userId, post._id);
+      await this.reactionService.getReactionByUserIdAndPostId(
+        userId,
+        post._id,
+        'post',
+      );
     if (userReaction) {
       const result = await this.reactionService.update(userReaction.id, {
         likeStatus: updateLikeStatusDto.likeStatus,
