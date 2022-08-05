@@ -60,7 +60,7 @@ export class ReactionsRepository implements IReactionsRepository {
   ): Promise<ReactionDBType[]> {
     return this.reactionsCollection
       .find({ 'target.type.type': type, 'target.type.targetId': targetId })
-      .sort({ createdAt: -1 })
+      .sort({ addedAt: -1 })
       .limit(limit)
       .select(['-_id', '-__v'])
       .lean();

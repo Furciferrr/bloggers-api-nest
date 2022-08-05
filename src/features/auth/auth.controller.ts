@@ -53,6 +53,7 @@ export class AuthController {
 
   @Post('/login')
   @UseGuards(ThrottlerGuard)
+  @HttpCode(200)
   async login(
     @Body() body: LoginUserDto,
     @Res({ passthrough: true }) response: Response,
@@ -62,7 +63,7 @@ export class AuthController {
       body.password,
     );
     if (checkResult.resultCode === 0) {
-      response.cookie('refresh', checkResult.data.refreshToken, {
+      response.cookie('refreshToken', checkResult.data.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
       });
