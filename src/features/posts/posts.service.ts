@@ -53,7 +53,7 @@ export class PostsService implements IPostService {
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
     const postsViewPromises = posts.map(async (post) => {
       const extendedLikesInfo = await this.buildExtendedLikesInfo(post._id);
-      const { _id, ...rest } = post;
+      const { _id, reactions, ...rest } = post;
       return { ...rest, extendedLikesInfo };
     });
     const postsView = await Promise.all(postsViewPromises);
