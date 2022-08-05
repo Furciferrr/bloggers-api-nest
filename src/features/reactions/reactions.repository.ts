@@ -80,4 +80,9 @@ export class ReactionsRepository implements IReactionsRepository {
       .select(['-_id', '-__v'])
       .lean();
   }
+
+  async deleteAllReactions(): Promise<any> {
+    const result = await this.reactionsCollection.remove({});
+    return result;
+  }
 }

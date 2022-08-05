@@ -52,4 +52,9 @@ export class BloggerRepository implements IBloggerRepository {
     await this.bloggersCollection.create(blogger);
     return blogger;
   }
+
+  async deleteAllBloggers(): Promise<any> {
+    const result = await this.bloggersCollection.remove({});
+    return result;
+  }
 }

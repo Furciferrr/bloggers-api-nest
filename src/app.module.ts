@@ -1,3 +1,4 @@
+import { ReactionsService } from './features/reactions/reactions.service';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,7 +13,12 @@ import { CommentsModule } from './features/comments/comments.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ReactionsModule } from './features/reactions/reactions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import ormConfig from './ormConfig';
+import ormConfig, { getOrmConfig } from './ormConfig';
+import { UsersService } from './features/users/users.service';
+import { CommentsService } from './features/comments/comments.service';
+import { BloggersService } from './features/bloggers/bloggers.service';
+import { PostsService } from './features/posts/posts.service';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
@@ -39,9 +45,17 @@ import ormConfig from './ormConfig';
       limit: 5,
     }),
     ReactionsModule,
+    CqrsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    UsersService,
+    CommentsService,
+    BloggersService,
+    PostsService,
+    ReactionsService,
+  ],
   exports: [ConfigModule],
 })
 export class AppModule {

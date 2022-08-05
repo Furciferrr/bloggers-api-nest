@@ -71,4 +71,9 @@ export class CommentsRepository implements ICommentsRepository {
   ): Promise<(CommentDBType & { _id: ObjectId }) | null> {
     return this.commentsCollection.findOne({ id }).select(['-__v']).lean();
   }
+
+  async deleteAllComments(): Promise<any> {
+    const result = await this.commentsCollection.remove({});
+    return result;
+  }
 }

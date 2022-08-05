@@ -95,4 +95,9 @@ export class PostRepository implements IPostRepository {
 
     return result[0] as DBType<PostDBType>;
   }
+
+  async deleteAllPosts(): Promise<any> {
+    const result = await this.postsCollection.remove({});
+    return result;
+  }
 }
