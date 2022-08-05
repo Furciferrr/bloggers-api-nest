@@ -12,6 +12,7 @@ import {
   UseGuards,
   Put,
   HttpCode,
+  Req,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -22,6 +23,7 @@ import { UpdateLikeStatusDto } from './dto/update-likeStatus.dto';
 import { User } from 'src/decorators/user.decorator';
 import { UserViewType } from '../users/types';
 import { CommentsService } from '../comments/comments.service';
+import { Request } from 'express';
 
 @Controller('posts')
 export class PostsController {
@@ -57,8 +59,8 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postsService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.postsService.findOne(id, req.user);
   }
 
   @Put(':id')

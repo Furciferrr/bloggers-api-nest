@@ -102,8 +102,7 @@ export class PostsService implements IPostService {
     return {
       likesCount,
       dislikesCount,
-      //myStatus: myStatus?.likeStatus || LikeStatus.None,
-      myStatus: LikeStatus.None,
+      myStatus: myStatus?.likeStatus || LikeStatus.None,
       newestLikes: newestLikes.map((reaction) => {
         return {
           userId: reaction.userId,
@@ -114,7 +113,10 @@ export class PostsService implements IPostService {
     };
   }
 
-  async findOne(id: string): Promise<PostViewType | null> {
+  async findOne(
+    id: string,
+    user?: { login: string; id: string },
+  ): Promise<PostViewType | null> {
     const post = await this.postRepository.getPostByIdWithObjectId(id);
     if (!post) {
       return null;
@@ -122,7 +124,7 @@ export class PostsService implements IPostService {
 
     const extendedLikesInfo = await this.buildExtendedLikesInfo(
       post._id,
-      //post.bloggerId,
+      user.id,
     );
 
     delete post._id;
