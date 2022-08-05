@@ -19,9 +19,7 @@ export class PostsService implements IPostService {
     private readonly bloggerRepository: BloggerRepository,
     private readonly reactionService: ReactionsService,
   ) {}
-  async create(
-    createPostDto: CreatePostDto,
-  ): Promise<Omit<PostDBType, '_id'> | false> {
+  async create(createPostDto: CreatePostDto): Promise<PostViewType | false> {
     const blogger = await this.bloggerRepository.getBloggerById(
       createPostDto.bloggerId,
     );
@@ -39,7 +37,7 @@ export class PostsService implements IPostService {
       addedAt: new Date(),
     };
     await this.postRepository.createPost(newPost);
-    return newPost;
+    return await this.findOne(newPost.id);
   }
 
   async findAll(
@@ -113,6 +111,7 @@ export class PostsService implements IPostService {
     );
 
     delete post._id;
+    delete post.reactions;
     const withReactions = Object.assign(post, {
       extendedLikesInfo,
     });

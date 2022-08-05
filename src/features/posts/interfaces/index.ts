@@ -32,5 +32,5 @@ export interface IPostService {
   findOne(id: string): Promise<PostViewType | null>;
   remove(id: string): Promise<boolean>;
   update(id: string, postDto: UpdatePostDto): Promise<400 | 404 | 204>;
-  create(postDto: CreatePostDto): Promise<Omit<PostDBType, '_id'> | false>;
+  create(postDto: CreatePostDto): Promise<PostViewType | false>;
 }

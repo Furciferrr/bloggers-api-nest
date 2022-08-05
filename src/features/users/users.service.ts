@@ -107,7 +107,7 @@ export class UsersService implements IUserService {
       emailConfirmation: {
         confirmationCode: uuidv4(),
         expirationDate: add(new Date(), { hours: 1, minutes: 2 }),
-        isConfirmed: false,
+        isConfirmed: true,
       },
       tokenVersion: 1,
     };

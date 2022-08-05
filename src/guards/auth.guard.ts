@@ -1,8 +1,8 @@
 import {
   CanActivate,
   ExecutionContext,
-  ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -15,6 +15,6 @@ export class AuthGuard implements CanActivate {
     if (request.user) {
       return true;
     }
-    throw new ForbiddenException('Not authorized');
+    throw new UnauthorizedException('Not authorized');
   }
 }
