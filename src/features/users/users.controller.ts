@@ -28,7 +28,7 @@ export class UsersController {
   async createUser(@Body() body: CreateUserDto) {
     const newUser = await this.userService.createUser(body);
     if (newUser.resultCode === 0) {
-      return;
+      return { id: newUser.result.id, login: newUser.result.login };
     } else {
       throw new HttpException('Conflict', HttpStatus.CONFLICT);
     }

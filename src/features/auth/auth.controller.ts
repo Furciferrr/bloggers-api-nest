@@ -62,7 +62,7 @@ export class AuthController {
       body.password,
     );
     if (checkResult.resultCode === 0) {
-      response.cookie('refreshToken', checkResult.data.refreshToken, {
+      response.cookie('refresh', checkResult.data.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
       });
