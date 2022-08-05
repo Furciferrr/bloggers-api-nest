@@ -6,10 +6,13 @@ import { Blogger, BloggerSchema } from './entities/blogger.schema';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PostsModule } from 'src/features/posts/posts.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BloggerEntity } from './entities/blogger.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Blogger.name, schema: BloggerSchema }]),
+    TypeOrmModule.forFeature([BloggerEntity]),
     ConfigModule,
     PostsModule,
   ],

@@ -67,7 +67,7 @@ export class ReactionsService {
     postId: ObjectId,
     limit: number,
     type: 'post' | 'comment',
-  ): Promise<Omit<ReactionViewType, 'id'>[]> {
+  ): Promise<Omit<ReactionViewType, 'id' | 'likeStatus'>[]> {
     const reactions =
       await this.reactionRepository.getNewestReactionsByTargetId(
         postId,
@@ -76,7 +76,7 @@ export class ReactionsService {
       );
 
     return reactions.map((reaction) => {
-      const { target, id, ...rest } = reaction;
+      const { target, id, likeStatus, ...rest } = reaction;
       return rest;
     });
   }

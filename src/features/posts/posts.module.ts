@@ -10,17 +10,29 @@ import { BloggersModule } from 'src/features/bloggers/bloggers.module';
 import { ReactionsModule } from '../reactions/reactions.module';
 import { ReactionsService } from '../reactions/reactions.service';
 import { CqrsModule } from '@nestjs/cqrs';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PostEntity } from './entities/post.entity';
+import { UsersModule } from '../users/users.module';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
+    TypeOrmModule.forFeature([PostEntity]),
     forwardRef(() => BloggersModule),
     ReactionsModule,
     CqrsModule,
     CommentsModule,
+    UsersModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, PostRepository, BloggersService, ReactionsService],
+  providers: [
+    PostsService,
+    PostRepository,
+    BloggersService,
+    ReactionsService,
+    UsersService,
+  ],
   exports: [PostRepository, PostsService],
 })
 export class PostsModule {}

@@ -11,6 +11,7 @@ import { UpdateLikeStatusDto } from './dto/update-likeStatus.dto';
 import { ReactionsService } from '../reactions/reactions.service';
 import { LikeStatus } from '../reactions/types';
 import { ObjectId } from 'mongoose';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class PostsService implements IPostService {
@@ -18,6 +19,7 @@ export class PostsService implements IPostService {
     private readonly postRepository: PostRepository,
     private readonly bloggerRepository: BloggerRepository,
     private readonly reactionService: ReactionsService,
+    private readonly userService: UsersService,
   ) {}
   async create(createPostDto: CreatePostDto): Promise<PostViewType | false> {
     const blogger = await this.bloggerRepository.getBloggerById(
@@ -91,11 +93,23 @@ export class PostsService implements IPostService {
       'post',
     );
 
+    const userPromises = newestLikes.map(async (like) => {
+      const user = await this.userService.getUserById(like.userId);
+      return user;
+    });
+    const users = await Promise.all(userPromises);
+
     return {
       likesCount,
       dislikesCount,
       myStatus: myStatus?.likeStatus || LikeStatus.None,
-      newestLikes,
+      newestLikes: newestLikes.map((reaction) => {
+        return {
+          userId: reaction.userId,
+          addedAt: reaction.addedAt,
+          login: users.find((user) => user.id === reaction.userId)?.login,
+        };
+      }),
     };
   }
 

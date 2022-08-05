@@ -6,6 +6,11 @@ import { ReactionsRepository } from './reactions.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreateReactionHandler } from './createReactionUseCase.handler';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import {
+  CommentReactionEntity,
+  PostReactionEntity,
+} from './entities/reaction.entity';
 
 export const CommandHandlers = [CreateReactionHandler];
 
@@ -14,6 +19,7 @@ export const CommandHandlers = [CreateReactionHandler];
     MongooseModule.forFeature([
       { name: Reaction.name, schema: ReactionSchema },
     ]),
+    TypeOrmModule.forFeature([CommentReactionEntity, PostReactionEntity]),
     CqrsModule,
   ],
   controllers: [ReactionsController],

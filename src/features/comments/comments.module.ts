@@ -7,10 +7,13 @@ import { CommentsRepository } from './comments.repository';
 import { ReactionsService } from '../reactions/reactions.service';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ReactionsModule } from '../reactions/reactions.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommentEntity } from './entities/comment.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Comment.name, schema: CommentSchema }]),
+    TypeOrmModule.forFeature([CommentEntity]),
     ReactionsModule,
     CqrsModule,
   ],

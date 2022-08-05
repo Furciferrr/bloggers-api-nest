@@ -59,7 +59,11 @@ export class ReactionsRepository implements IReactionsRepository {
     type: 'post' | 'comment',
   ): Promise<ReactionDBType[]> {
     return this.reactionsCollection
-      .find({ 'target.type.type': type, 'target.type.targetId': targetId })
+      .find({
+        'target.type.type': type,
+        'target.type.targetId': targetId,
+        likeStatus: LikeStatus.Like,
+      })
       .sort({ addedAt: -1 })
       .limit(limit)
       .select(['-_id', '-__v'])

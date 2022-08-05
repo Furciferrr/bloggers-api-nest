@@ -17,7 +17,11 @@ export type ExtendedLikesInfoType = {
   likesCount: number;
   dislikesCount: number;
   myStatus: LikeStatus;
-  newestLikes: Array<Omit<ReactionViewType, 'id'>>;
+  newestLikes: Array<{
+    addedAt: Date;
+    userId: string;
+    login: string;
+  }>;
 };
 
 export type PostViewType = {

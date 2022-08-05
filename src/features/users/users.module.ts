@@ -7,10 +7,13 @@ import { UserRepository } from './users.repository';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { MailSender } from 'src/adapters/email-adapter';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './entities/user.entity';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    TypeOrmModule.forFeature([UserEntity]),
     ConfigModule,
   ],
   controllers: [UsersController],

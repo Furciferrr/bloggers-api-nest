@@ -20,7 +20,8 @@ export type ReactionDBType = {
 
 export type ReactionViewType = {
   id: string;
-  likeStatus: LikeStatus;
   userId: string;
+  likeStatus: LikeStatus;
   addedAt: Date;
 };
+
