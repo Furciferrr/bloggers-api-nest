@@ -100,7 +100,7 @@ export class PostsController {
     @Body() comment: { content: string },
     @User() user: UserViewType,
   ) {
-    const foundPost = await this.postsService.findOne(id);
+    const foundPost = await this.postsService.findOne(id, user);
     if (!foundPost) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
@@ -119,10 +119,11 @@ export class PostsController {
       pageNumber: string;
       pageSize: string;
     },
+    @Req() req: Request
   ) {
     const pageNumber = query.pageNumber;
     const pageSize = query.pageSize;
-    const foundPost = await this.postsService.findOne(id);
+    const foundPost = await this.postsService.findOne(id, req.user);
     if (!foundPost) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }

@@ -124,7 +124,7 @@ export class PostsService implements IPostService {
 
     const extendedLikesInfo = await this.buildExtendedLikesInfo(
       post._id,
-      user.id,
+      user?.id,
     );
 
     delete post._id;
