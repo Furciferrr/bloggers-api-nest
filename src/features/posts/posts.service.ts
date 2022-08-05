@@ -19,14 +19,16 @@ export class PostsService implements IPostService {
     private readonly bloggerRepository: BloggerRepository,
     private readonly reactionService: ReactionsService,
   ) {}
-  async create(createPostDto: CreatePostDto): Promise<PostDBType | false> {
+  async create(
+    createPostDto: CreatePostDto,
+  ): Promise<Omit<PostDBType, '_id'> | false> {
     const blogger = await this.bloggerRepository.getBloggerById(
       createPostDto.bloggerId,
     );
     if (!blogger) {
       return false;
     }
-    const newPost: PostDBType = {
+    const newPost: Omit<PostDBType, '_id'> = {
       id: getRandomNumber().toString(),
       title: createPostDto.title,
       shortDescription: createPostDto.shortDescription,
@@ -48,11 +50,13 @@ export class PostsService implements IPostService {
       pageNumber || 1,
       pageSize || 10,
     );
+
     const totalCount = await this.postRepository.getTotalCount();
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
     const postsViewPromises = posts.map(async (post) => {
-      const extendedLikesInfo = await this.buildExtendedLikesInfo(post.id);
-      return { ...post, extendedLikesInfo };
+      const extendedLikesInfo = await this.buildExtendedLikesInfo(post._id);
+      const { _id, ...rest } = post;
+      return { ...rest, extendedLikesInfo };
     });
     const postsView = await Promise.all(postsViewPromises);
 
@@ -67,23 +71,28 @@ export class PostsService implements IPostService {
   }
 
   async buildExtendedLikesInfo(
-    postId: string,
+    postObjectId: ObjectId,
     userId?: string,
-    postObjectId?: ObjectId,
   ): Promise<ExtendedLikesInfoType> {
-    const likesCount = await this.reactionService.likesCountByPostId(postId);
-    const dislikesCount = await this.reactionService.dislikesCountByPostId(
-      postId,
-    );
-    const myStatus = await this.reactionService.getReactionByUserIdAndPostId(
-      userId,
+    const likesCount = await this.reactionService.likesCountByTargetId(
       postObjectId,
       'post',
     );
-    const newestLikes = await this.reactionService.getNewestReactionsByPostId(
-      postId,
-      3,
+    const dislikesCount = await this.reactionService.dislikesCountByTargetId(
+      postObjectId,
+      'post',
     );
+    const myStatus = await this.reactionService.getReactionByUserIdAndTargetId(
+      postObjectId,
+      'post',
+      userId,
+    );
+    const newestLikes = await this.reactionService.getNewestReactionsByTargetId(
+      postObjectId,
+      3,
+      'post',
+    );
+
     return {
       likesCount,
       dislikesCount,
@@ -92,8 +101,23 @@ export class PostsService implements IPostService {
     };
   }
 
-  async findOne(id: string): Promise<PostDBType | null> {
-    return this.postRepository.getPostById(id);
+  async findOne(id: string): Promise<PostViewType | null> {
+    const post = await this.postRepository.getPostByIdWithObjectId(id);
+    if (!post) {
+      return null;
+    }
+
+    const extendedLikesInfo = await this.buildExtendedLikesInfo(
+      post._id,
+      post.bloggerId,
+    );
+
+    delete post._id;
+    const withReactions = Object.assign(post, {
+      extendedLikesInfo,
+    });
+
+    return withReactions;
   }
 
   async update(
@@ -119,23 +143,29 @@ export class PostsService implements IPostService {
     bloggerId: string,
     pageNumber: number,
     pageSize: number,
-  ): Promise<ResponseType<PostDBType> | false> {
+  ): Promise<ResponseType<PostViewType> | false> {
     const blogger = await this.bloggerRepository.getBloggerById(bloggerId);
     if (!blogger) {
       return false;
     }
-    const resultPosts = await this.postRepository.getPostByBloggerId(
+    const resultPosts = await this.postRepository.getPostsByBloggerId(
       bloggerId,
       pageNumber || 1,
       pageSize || 10,
     );
     const { pagination, ...result } = resultPosts;
+    const postsViewPromises = result.items.map(async (post) => {
+      const extendedLikesInfo = await this.buildExtendedLikesInfo(post._id);
+      const { _id, ...rest } = post;
+      return { ...rest, extendedLikesInfo };
+    });
+    const postsView = await Promise.all(postsViewPromises);
     return {
       pagesCount: Math.ceil(pagination[0].totalCount / (pageSize || 10)),
       page: pageNumber | 1,
       pageSize: pageSize || 10,
       totalCount: pagination[0].totalCount,
-      ...result,
+      items: postsView,
     };
   }
 
@@ -145,22 +175,24 @@ export class PostsService implements IPostService {
     userId: string,
   ): Promise<any> {
     const post = await this.postRepository.getPostByIdWithObjectId(id);
+
     if (!post) {
       return false;
     }
     const userReaction =
-      await this.reactionService.getReactionByUserIdAndPostId(
-        userId,
+      await this.reactionService.getReactionByUserIdAndTargetId(
         post._id,
         'post',
+        userId,
       );
+
     if (userReaction) {
       const result = await this.reactionService.update(userReaction.id, {
         likeStatus: updateLikeStatusDto.likeStatus,
       });
       return result;
     } else {
-      const result = await this.reactionService.create({
+      const result = await this.reactionService.createCommandUseCase({
         likeStatus: updateLikeStatusDto.likeStatus,
         userId,
         target: {

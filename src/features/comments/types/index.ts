@@ -1,4 +1,8 @@
+import { ObjectId } from 'mongoose';
+import { LikeStatus } from 'src/features/reactions/types';
+
 export type CommentDBType = {
+  _id: ObjectId;
   id: string;
   content: string;
   userId: string;
@@ -7,4 +11,10 @@ export type CommentDBType = {
   postId: string;
 };
 
-export type CommentView = Omit<CommentDBType, 'postId'>;
+export type CommentView = Omit<CommentDBType, 'postId' | '_id'> & {
+  likesInfo: {
+    likesCount: number;
+    dislikesCount: number;
+    myStatus: LikeStatus;
+  };
+};

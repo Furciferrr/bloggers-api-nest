@@ -5,7 +5,7 @@ import { UpdateCommentDto } from '../dto/update-comment.dto';
 import { CommentDBType, CommentView } from '../types';
 
 export interface ICommentsService {
-  findOne(id: string): Promise<CommentDBType | null>;
+  findOne(id: string): Promise<CommentView | null>;
   update(id: string, commentDto: UpdateCommentDto): Promise<boolean>;
   remove(id: string): Promise<boolean>;
   getCommentsByPostId(
@@ -17,7 +17,7 @@ export interface ICommentsService {
     postId: string,
     commentDto: CreateCommentDto,
     user: UserViewType,
-  ): Promise<CommentDBType>;
+  ): Promise<CommentView>;
 }
 
 export interface ICommentsRepository {
@@ -28,7 +28,7 @@ export interface ICommentsRepository {
     id: string,
     pageNumber: number,
     pageSize: number,
-  ): Promise<Array<CommentView>>;
-  create(comment: CommentDBType): Promise<CommentDBType>;
+  ): Promise<Array<CommentDBType>>;
+  create(comment: CommentDBType): Promise<Omit<CommentDBType, '_id'>>;
   getTotalCount(postId: string): Promise<number>;
 }

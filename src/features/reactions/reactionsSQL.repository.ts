@@ -6,7 +6,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
 @Injectable()
-export class ReactionsRepository implements IReactionsRepository {
+export class ReactionsSQLRepository implements IReactionsRepository {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
   async create(reaction: ReactionDBType): Promise<ReactionDBType> {
     return this.dataSource.query(`INSERT INTO reactions VALUES()`);

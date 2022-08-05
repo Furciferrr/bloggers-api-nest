@@ -21,6 +21,8 @@ export class Post {
   bloggerName: string;
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Reaction' })
   reactions: Reaction[];
+  @Prop({ type: Date, required: true })
+  addedAt: Date;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

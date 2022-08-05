@@ -18,7 +18,7 @@ export class PostRepository implements IPostRepository {
       .find({})
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize)
-      .select(['-_id', '-__v', '-reactions'])
+      .select(['-__v', '-reactions'])
       .lean();
   }
 
@@ -26,7 +26,7 @@ export class PostRepository implements IPostRepository {
     return await this.postsCollection.countDocuments();
   }
   async getPostById(id: string): Promise<PostDBType | null> {
-    return this.postsCollection.findOne({ id }).select(['-_id', '-__v']).lean();
+    return this.postsCollection.findOne({ id }).select(['-__v']).lean();
   }
   async getPostByIdWithObjectId(
     id: string,
@@ -67,12 +67,14 @@ export class PostRepository implements IPostRepository {
     return result.modifiedCount === 1;
   }
 
-  async createPost(post: PostDBType): Promise<PostDBType> {
+  async createPost(
+    post: Omit<PostDBType, '_id'>,
+  ): Promise<Omit<PostDBType, '_id'>> {
     await this.postsCollection.create(post);
     return post;
   }
 
-  async getPostByBloggerId(
+  async getPostsByBloggerId(
     bloggerId: string,
     pageNumber: number,
     pageSize: number,
@@ -84,12 +86,13 @@ export class PostRepository implements IPostRepository {
             { $match: { bloggerId } },
             { $skip: (pageNumber - 1) * pageSize },
             { $limit: pageSize },
-            { $project: { _id: 0, postId: 0, __v: 0 } },
+            { $project: { postId: 0, __v: 0, reactions: 0 } },
           ],
           pagination: [{ $count: 'totalCount' }],
         },
       },
     ]);
+
     return result[0] as DBType<PostDBType>;
   }
 }

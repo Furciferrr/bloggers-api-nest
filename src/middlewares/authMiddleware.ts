@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
-import { verify } from 'jsonwebtoken';
+import { JwtPayload, verify } from 'jsonwebtoken';
 import { UsersService } from 'src/features/users/users.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -27,7 +27,9 @@ export class AuthMiddleware implements NestMiddleware {
         this.configService.get<string>('JWT_SECRET'),
       );
 
-      const user = await this.userService.getUserById(decode.id);
+      const user = await this.userService.getUserById(
+        decode.id ? decode.id : '',
+      );
 
       req.user = user;
       next();

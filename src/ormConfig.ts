@@ -7,7 +7,7 @@ const ormConfig: DataSourceOptions = {
   username: 'postgres',
   password: '123456',
   database: 'bloggers',
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  entities: [__dirname + '/**/**/*.entity{.ts,.js}'],
   synchronize: true,
 };
 

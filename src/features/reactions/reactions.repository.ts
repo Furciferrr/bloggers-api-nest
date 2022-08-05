@@ -13,7 +13,14 @@ export class ReactionsRepository implements IReactionsRepository {
     private reactionsCollection: Model<ReactionDocument>,
   ) {}
   async create(reaction: ReactionDBType): Promise<ReactionDBType> {
-    return this.reactionsCollection.create(reaction);
+    return this.reactionsCollection.create({
+      ...reaction,
+      target: {
+        type: {
+          ...reaction.target,
+        },
+      },
+    });
   }
 
   async update(id: string, reaction: UpdateReactionDto): Promise<boolean> {
@@ -24,41 +31,51 @@ export class ReactionsRepository implements IReactionsRepository {
     return result.modifiedCount === 1;
   }
 
-  async likesCountByPostId(postId: string): Promise<number> {
+  async likesCountByTargetId(
+    postId: ObjectId,
+    type: 'post' | 'comment',
+  ): Promise<number> {
     return await this.reactionsCollection.countDocuments({
-      postId,
+      'target.type.targetId': postId,
+      'target.type.type': type,
       likeStatus: LikeStatus.Like,
     });
   }
 
-  async dislikesCountByPostId(postId: string): Promise<number> {
+  async dislikesCountByTargetId(
+    postId: ObjectId,
+    type: 'post' | 'comment',
+  ): Promise<number> {
     return await this.reactionsCollection.countDocuments({
-      postId,
+      'target.type.targetId': postId,
+      'target.type.type': type,
       likeStatus: LikeStatus.Dislike,
     });
   }
 
-  async getNewestReactionsByPostId(
-    postId: string,
+  async getNewestReactionsByTargetId(
+    targetId: ObjectId,
     limit: number,
+    type: 'post' | 'comment',
   ): Promise<ReactionDBType[]> {
     return this.reactionsCollection
-      .find({ postId })
+      .find({ 'target.type.type': type, 'target.type.targetId': targetId })
       .sort({ createdAt: -1 })
       .limit(limit)
       .select(['-_id', '-__v'])
       .lean();
   }
 
-  async getReactionByUserIdAndPostId(
+  async getReactionByUserIdAndTargetId(
     userId: string,
     postObjectId: ObjectId,
+    type: 'post' | 'comment',
   ): Promise<ReactionDBType | null> {
     return this.reactionsCollection
       .findOne({
         userId,
-        'target..type.type': 'post',
-        'target.targetId': postObjectId,
+        'target.type.type': type,
+        'target.type.targetId': postObjectId,
       })
       .select(['-_id', '-__v'])
       .lean();
