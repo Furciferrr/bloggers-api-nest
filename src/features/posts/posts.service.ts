@@ -102,7 +102,8 @@ export class PostsService implements IPostService {
     return {
       likesCount,
       dislikesCount,
-      myStatus: myStatus?.likeStatus || LikeStatus.None,
+      //myStatus: myStatus?.likeStatus || LikeStatus.None,
+      myStatus: LikeStatus.None,
       newestLikes: newestLikes.map((reaction) => {
         return {
           userId: reaction.userId,
