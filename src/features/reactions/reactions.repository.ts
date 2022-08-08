@@ -28,7 +28,7 @@ export class ReactionsRepository implements IReactionsRepository {
       { id },
       { $set: reaction },
     );
-    return result.modifiedCount === 1;
+    return result.modifiedCount === 1 || result.matchedCount >= 1;
   }
 
   async likesCountByTargetId(
