@@ -13,7 +13,7 @@ import { CommentsModule } from './features/comments/comments.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ReactionsModule } from './features/reactions/reactions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import ormConfig, { getOrmConfig } from './ormConfig';
+import ormConfig from './ormConfig';
 import { UsersService } from './features/users/users.service';
 import { CommentsService } from './features/comments/comments.service';
 import { BloggersService } from './features/bloggers/bloggers.service';

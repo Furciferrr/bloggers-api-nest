@@ -59,8 +59,8 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Req() req: Request) {
-    return this.postsService.findOne(id, req.user);
+  findOne(@Param('id') id: string, @User() user: UserViewType) {
+    return this.postsService.findOne(id, user);
   }
 
   @Put(':id')
@@ -119,7 +119,7 @@ export class PostsController {
       pageNumber: string;
       pageSize: string;
     },
-    @Req() req: Request
+    @Req() req: Request,
   ) {
     const pageNumber = query.pageNumber;
     const pageSize = query.pageSize;

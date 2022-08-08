@@ -17,14 +17,15 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { User } from 'src/decorators/user.decorator';
 import { UpdateLikeStatusDto } from '../posts/dto/update-likeStatus.dto';
+import { UserViewType } from '../users/types';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(id);
+  findOne(@Param('id') id: string, @User() user: UserViewType) {
+    return this.commentsService.findOne(id, user);
   }
 
   @Put(':id')

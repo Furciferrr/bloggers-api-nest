@@ -43,12 +43,12 @@ export class CommentsService implements ICommentsService {
     return withReactions;
   }
 
-  async findOne(id: string): Promise<CommentView | null> {
+  async findOne(id: string, user?: UserViewType): Promise<CommentView | null> {
     const comment = await this.commentsRepository.findOne(id);
     if (!comment) {
       return null;
     }
-    const likesInfo = await this.buildLikesInfo(comment._id);
+    const likesInfo = await this.buildLikesInfo(comment._id, user?.id);
     delete comment._id;
     delete comment.postId;
     const withReactions = Object.assign(comment, {

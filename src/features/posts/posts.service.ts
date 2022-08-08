@@ -12,6 +12,7 @@ import { ReactionsService } from '../reactions/reactions.service';
 import { LikeStatus } from '../reactions/types';
 import { ObjectId } from 'mongoose';
 import { UsersService } from '../users/users.service';
+import { UserViewType } from '../users/types';
 
 @Injectable()
 export class PostsService implements IPostService {
@@ -113,10 +114,7 @@ export class PostsService implements IPostService {
     };
   }
 
-  async findOne(
-    id: string,
-    user?: { login: string; id: string },
-  ): Promise<PostViewType | null> {
+  async findOne(id: string, user?: UserViewType): Promise<PostViewType | null> {
     const post = await this.postRepository.getPostByIdWithObjectId(id);
     if (!post) {
       return null;
