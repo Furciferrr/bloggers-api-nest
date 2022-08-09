@@ -52,11 +52,12 @@ export class PostsService implements IPostService {
       pageNumber || 1,
       pageSize || 10,
     );
-
+      console.log("POSTS:", posts)
     const totalCount = await this.postRepository.getTotalCount();
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
     const postsViewPromises = posts.map(async (post) => {
       const extendedLikesInfo = await this.buildExtendedLikesInfo(post.id);
+      console.log(post)
       const { _id, reactions, ...rest } = post;
       return { ...rest, extendedLikesInfo };
     });
