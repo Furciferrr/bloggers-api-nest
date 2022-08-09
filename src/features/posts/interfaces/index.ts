@@ -3,6 +3,7 @@ import { ResponseType } from 'src/types';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { PaginateType, PostDBType } from '../types';
+import { UserViewType } from 'src/features/users/types';
 
 export interface IPostRepository {
   getPosts(pageNumber: number, pageSize: number): Promise<PostDBType[]>;
@@ -28,6 +29,7 @@ export interface IPostService {
     bloggerId: string,
     pageNumber: number,
     pageSize: number,
+    user: UserViewType,
   ): Promise<ResponseType<PostViewType> | false>;
   findOne(id: string): Promise<PostViewType | null>;
   remove(id: string): Promise<boolean>;

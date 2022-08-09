@@ -16,6 +16,8 @@ import { PostsService } from 'src/features/posts/posts.service';
 import { BloggersService } from './bloggers.service';
 import { CreateBloggerDto } from './dto/create-blogger.dto';
 import { UpdateBloggerDto } from './dto/update-blogger.dto';
+import { User } from 'src/decorators/user.decorator';
+import { UserViewType } from '../users/types';
 
 @Controller('bloggers')
 export class BloggersController {
@@ -109,11 +111,13 @@ export class BloggersController {
   async getPostsByBloggerId(
     @Param('bloggerId') bloggerId: string,
     @Query() query: { pageNumber: string; pageSize: string },
+    @User() user: UserViewType,
   ) {
     const posts = await this.postsService.getPostsByBloggerId(
       bloggerId,
       +query.pageNumber,
       +query.pageSize,
+      user,
     );
     if (!posts) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);

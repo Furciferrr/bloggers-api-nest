@@ -158,6 +158,7 @@ export class PostsService implements IPostService {
     bloggerId: string,
     pageNumber: number,
     pageSize: number,
+    user: UserViewType,
   ): Promise<ResponseType<PostViewType> | false> {
     const blogger = await this.bloggerRepository.getBloggerById(bloggerId);
     if (!blogger) {
@@ -170,7 +171,10 @@ export class PostsService implements IPostService {
     );
     const { pagination, ...result } = resultPosts;
     const postsViewPromises = result.items.map(async (post) => {
-      const extendedLikesInfo = await this.buildExtendedLikesInfo(post.id);
+      const extendedLikesInfo = await this.buildExtendedLikesInfo(
+        post.id,
+        user?.id,
+      );
       const { _id, ...rest } = post;
       return { ...rest, extendedLikesInfo };
     });
