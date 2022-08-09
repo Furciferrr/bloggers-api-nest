@@ -17,7 +17,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (status === HttpStatus.BAD_REQUEST) {
       if (
-        request.route.path === '/posts/:id/like-status' &&
+        (request.route.path === '/posts/:id/like-status' ||
+          request.route.path === '/comments/:id/like-status') &&
         Object.keys(request.body).length === 0
       ) {
         status = HttpStatus.NOT_FOUND;

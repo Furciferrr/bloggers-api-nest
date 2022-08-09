@@ -71,15 +71,16 @@ export class ReactionsRepository implements IReactionsRepository {
   }
 
   async getReactionByUserIdAndTargetId(
-    userId: string,
     targetId: string,
     type: 'post' | 'comment',
+    userId?: string,
   ): Promise<ReactionDBType | null> {
+    const user = userId ? { userId } : {};
     return this.reactionsCollection
       .findOne({
-        userId,
         'target.type.type': type,
         'target.type.targetId': targetId,
+        ...user,
       })
       .select(['-_id', '-__v'])
       .lean();

@@ -187,7 +187,7 @@ export class PostsService implements IPostService {
   async updateLikeStatus(
     id: string,
     updateLikeStatusDto: UpdateLikeStatusDto,
-    userId: string,
+    userId?: string,
   ): Promise<any> {
     const post = await this.postRepository.getPostById(id);
 

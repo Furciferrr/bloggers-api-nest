@@ -88,9 +88,9 @@ export class ReactionsService {
   ): Promise<ReactionViewType | null> {
     const reaction =
       await this.reactionRepository.getReactionByUserIdAndTargetId(
-        userId,
         postId,
         type,
+        userId,
       );
 
     //const { target, ...rest } = reaction;
