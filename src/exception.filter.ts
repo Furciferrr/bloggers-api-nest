@@ -13,9 +13,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const status = exception.getStatus();
+    let status = exception.getStatus();
 
     if (status === HttpStatus.BAD_REQUEST) {
+      if (
+        request.route.path === '/posts/:id/like-status' &&
+        Object.keys(request.body).length === 0
+      ) {
+        status = HttpStatus.NOT_FOUND;
+      }
       const errorsResponse = {
         errorsMessages: [],
       };

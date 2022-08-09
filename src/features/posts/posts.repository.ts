@@ -70,7 +70,7 @@ export class PostRepository implements IPostRepository {
     const conclusion = await (
       await this.postsCollection.create(post)
     ).toObject();
-    const { _id, __v, ...rest } = conclusion;
+    const { _id, __v, reactions, ...rest } = conclusion;
     return rest as Omit<PostDBType, '_id'>;
   }
 
