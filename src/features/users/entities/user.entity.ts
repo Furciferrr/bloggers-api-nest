@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('confirmations')
 export class ConfirmationEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,7 +20,7 @@ export class ConfirmationEntity {
   isConfirmed: boolean;
 }
 
-@Entity()
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: string;
@@ -28,13 +28,13 @@ export class UserEntity {
   login: string;
   @Column()
   hashPassword: string;
-  @OneToOne(() => ConfirmationEntity)
-  @JoinColumn()
-  confirmation: ConfirmationEntity;
   @Column()
   email: string;
   @Column()
   tokenVersion: number;
+  @OneToOne(() => ConfirmationEntity)
+  @JoinColumn()
+  confirmation: ConfirmationEntity;
   @OneToMany(() => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
 }

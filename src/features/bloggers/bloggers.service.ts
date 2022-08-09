@@ -21,8 +21,8 @@ export class BloggersService implements IBloggerService {
       name: createBloggerDto.name,
       youtubeUrl: createBloggerDto.youtubeUrl,
     };
-    await this.bloggersRepository.createBlogger(newBlogger);
-    return newBlogger;
+    const result = await this.bloggersRepository.createBlogger(newBlogger);
+    return result;
   }
 
   async findAll(

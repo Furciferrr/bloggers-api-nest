@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('postsReactions')
 export class PostReactionEntity {
   @PrimaryGeneratedColumn()
   id: string;
@@ -23,7 +23,7 @@ export class PostReactionEntity {
   target: PostEntity;
 }
 
-@Entity()
+@Entity('commentsReactions')
 export class CommentReactionEntity {
   @PrimaryGeneratedColumn()
   id: string;

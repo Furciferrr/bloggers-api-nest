@@ -10,7 +10,6 @@ import { IPostService } from './interfaces';
 import { UpdateLikeStatusDto } from './dto/update-likeStatus.dto';
 import { ReactionsService } from '../reactions/reactions.service';
 import { LikeStatus } from '../reactions/types';
-import { ObjectId } from 'mongoose';
 import { UsersService } from '../users/users.service';
 import { UserViewType } from '../users/types';
 
@@ -39,8 +38,10 @@ export class PostsService implements IPostService {
       reactions: [],
       addedAt: new Date(),
     };
-    await this.postRepository.createPost(newPost);
-    return await this.findOne(newPost.id);
+    const conclusion = await this.postRepository.createPost(newPost);
+    const extendedLikesInfo = await this.buildExtendedLikesInfo(conclusion.id);
+
+    return { ...conclusion, extendedLikesInfo };
   }
 
   async findAll(
@@ -55,7 +56,7 @@ export class PostsService implements IPostService {
     const totalCount = await this.postRepository.getTotalCount();
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
     const postsViewPromises = posts.map(async (post) => {
-      const extendedLikesInfo = await this.buildExtendedLikesInfo(post._id);
+      const extendedLikesInfo = await this.buildExtendedLikesInfo(post.id);
       const { _id, reactions, ...rest } = post;
       return { ...rest, extendedLikesInfo };
     });
@@ -72,24 +73,24 @@ export class PostsService implements IPostService {
   }
 
   async buildExtendedLikesInfo(
-    postObjectId: ObjectId,
+    postId: string,
     userId?: string,
   ): Promise<ExtendedLikesInfoType> {
     const likesCount = await this.reactionService.likesCountByTargetId(
-      postObjectId,
+      postId,
       'post',
     );
     const dislikesCount = await this.reactionService.dislikesCountByTargetId(
-      postObjectId,
+      postId,
       'post',
     );
     const myStatus = await this.reactionService.getReactionByUserIdAndTargetId(
-      postObjectId,
+      postId,
       'post',
       userId,
     );
     const newestLikes = await this.reactionService.getNewestReactionsByTargetId(
-      postObjectId,
+      postId,
       3,
       'post',
     );
@@ -121,7 +122,7 @@ export class PostsService implements IPostService {
     }
 
     const extendedLikesInfo = await this.buildExtendedLikesInfo(
-      post._id,
+      post.id,
       user?.id,
     );
 
@@ -169,7 +170,7 @@ export class PostsService implements IPostService {
     );
     const { pagination, ...result } = resultPosts;
     const postsViewPromises = result.items.map(async (post) => {
-      const extendedLikesInfo = await this.buildExtendedLikesInfo(post._id);
+      const extendedLikesInfo = await this.buildExtendedLikesInfo(post.id);
       const { _id, ...rest } = post;
       return { ...rest, extendedLikesInfo };
     });
@@ -188,14 +189,14 @@ export class PostsService implements IPostService {
     updateLikeStatusDto: UpdateLikeStatusDto,
     userId: string,
   ): Promise<any> {
-    const post = await this.postRepository.getPostByIdWithObjectId(id);
+    const post = await this.postRepository.getPostById(id);
 
     if (!post) {
       return false;
     }
     const userReaction =
       await this.reactionService.getReactionByUserIdAndTargetId(
-        post._id,
+        post.id,
         'post',
         userId,
       );
@@ -212,7 +213,7 @@ export class PostsService implements IPostService {
         target: {
           type: {
             type: 'post',
-            targetId: post._id,
+            targetId: post.id,
           },
         },
       });

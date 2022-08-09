@@ -9,6 +9,7 @@ import { UsersService } from './users.service';
 import { MailSender } from 'src/adapters/email-adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
+import { UserSQLRepository } from './usersSQL.repository';
 
 @Module({
   imports: [
@@ -17,7 +18,12 @@ import { UserEntity } from './entities/user.entity';
     ConfigModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, AuthGuard, UserRepository, MailSender],
+  providers: [
+    { provide: UserRepository, useClass: UserRepository },
+    UsersService,
+    AuthGuard,
+    MailSender,
+  ],
   exports: [UsersService, UserRepository],
 })
 export class UsersModule {}

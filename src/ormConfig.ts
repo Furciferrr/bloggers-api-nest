@@ -9,8 +9,8 @@ const ormConfig: DataSourceOptions = {
   password: process.env.POSTGRES_DB_PASSWORD || '123456',
   database: process.env.POSTGRES_DATABASE || 'bloggers',
   entities: [__dirname + '/**/**/*.entity{.ts,.js}'],
-  synchronize: false,
-  ssl: { rejectUnauthorized: false },
+  synchronize: true,
+  //ssl: { rejectUnauthorized: false },
 };
 export default ormConfig;
 

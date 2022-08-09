@@ -32,29 +32,29 @@ export class ReactionsRepository implements IReactionsRepository {
   }
 
   async likesCountByTargetId(
-    postId: ObjectId,
+    targetId: string,
     type: 'post' | 'comment',
   ): Promise<number> {
     return await this.reactionsCollection.countDocuments({
-      'target.type.targetId': postId,
+      'target.type.targetId': targetId,
       'target.type.type': type,
       likeStatus: LikeStatus.Like,
     });
   }
 
   async dislikesCountByTargetId(
-    postId: ObjectId,
+    targetId: string,
     type: 'post' | 'comment',
   ): Promise<number> {
     return await this.reactionsCollection.countDocuments({
-      'target.type.targetId': postId,
+      'target.type.targetId': targetId,
       'target.type.type': type,
       likeStatus: LikeStatus.Dislike,
     });
   }
 
   async getNewestReactionsByTargetId(
-    targetId: ObjectId,
+    targetId: string,
     limit: number,
     type: 'post' | 'comment',
   ): Promise<ReactionDBType[]> {
@@ -72,14 +72,14 @@ export class ReactionsRepository implements IReactionsRepository {
 
   async getReactionByUserIdAndTargetId(
     userId: string,
-    postObjectId: ObjectId,
+    targetId: string,
     type: 'post' | 'comment',
   ): Promise<ReactionDBType | null> {
     return this.reactionsCollection
       .findOne({
         userId,
         'target.type.type': type,
-        'target.type.targetId': postObjectId,
+        'target.type.targetId': targetId,
       })
       .select(['-_id', '-__v'])
       .lean();

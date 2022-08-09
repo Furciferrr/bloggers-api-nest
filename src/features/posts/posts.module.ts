@@ -14,6 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostEntity } from './entities/post.entity';
 import { UsersModule } from '../users/users.module';
 import { UsersService } from '../users/users.service';
+import { PostsSQLRepository } from './postsSQL.repository';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { UsersService } from '../users/users.service';
   controllers: [PostsController],
   providers: [
     PostsService,
-    PostRepository,
+    { provide: PostRepository, useClass: PostRepository },
     BloggersService,
     ReactionsService,
     UsersService,

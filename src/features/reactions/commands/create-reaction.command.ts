@@ -6,7 +6,7 @@ export class CreateReactionCommand {
     public readonly userId: string,
     public readonly target: {
       type: 'comment' | 'post';
-      targetId: ObjectId;
+      targetId: string;
     },
     public readonly likeStatus: LikeStatus,
   ) {}

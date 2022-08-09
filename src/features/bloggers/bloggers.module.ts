@@ -8,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PostsModule } from 'src/features/posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BloggerEntity } from './entities/blogger.entity';
+import { BloggersSQLRepository } from './bloggersSQL.repository';
 
 @Module({
   imports: [
@@ -17,7 +18,10 @@ import { BloggerEntity } from './entities/blogger.entity';
     PostsModule,
   ],
   controllers: [BloggersController],
-  providers: [BloggersService, BloggerRepository],
+  providers: [
+    BloggersService,
+    { provide: BloggerRepository, useClass: BloggerRepository },
+  ],
   exports: [BloggerRepository],
 })
 export class BloggersModule {}

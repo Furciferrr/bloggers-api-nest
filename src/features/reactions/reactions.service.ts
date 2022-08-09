@@ -50,21 +50,21 @@ export class ReactionsService {
   }
 
   async likesCountByTargetId(
-    postId: ObjectId,
+    postId: string,
     type: 'post' | 'comment',
   ): Promise<number> {
     return await this.reactionRepository.likesCountByTargetId(postId, type);
   }
 
   async dislikesCountByTargetId(
-    postId: ObjectId,
+    postId: string,
     type: 'post' | 'comment',
   ): Promise<number> {
     return await this.reactionRepository.dislikesCountByTargetId(postId, type);
   }
 
   async getNewestReactionsByTargetId(
-    postId: ObjectId,
+    postId: string,
     limit: number,
     type: 'post' | 'comment',
   ): Promise<Omit<ReactionViewType, 'id' | 'likeStatus'>[]> {
@@ -82,14 +82,14 @@ export class ReactionsService {
   }
 
   async getReactionByUserIdAndTargetId(
-    postObjectId: ObjectId,
+    postId: string,
     type: 'post' | 'comment',
     userId?: string,
   ): Promise<ReactionViewType | null> {
     const reaction =
       await this.reactionRepository.getReactionByUserIdAndTargetId(
         userId,
-        postObjectId,
+        postId,
         type,
       );
 

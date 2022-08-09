@@ -56,10 +56,7 @@ export class PostRepository implements IPostRepository {
     return result.modifiedCount === 1;
   }
 
-  async updateReaction(
-    id: string,
-    objectId: mongoose.Types.ObjectId,
-  ): Promise<boolean> {
+  async updateReaction(id: string, objectId: string): Promise<boolean> {
     const result = await this.postsCollection.updateOne(
       { id },
       { $addToSet: { reactions: objectId as any } },
@@ -70,8 +67,7 @@ export class PostRepository implements IPostRepository {
   async createPost(
     post: Omit<PostDBType, '_id'>,
   ): Promise<Omit<PostDBType, '_id'>> {
-    await this.postsCollection.create(post);
-    return post;
+    return await this.postsCollection.create(post);
   }
 
   async getPostsByBloggerId(

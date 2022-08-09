@@ -10,7 +10,6 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { ICommentsService } from './interfaces';
 import { CommentDBType, CommentView } from './types';
-import { ObjectId } from 'mongoose';
 
 @Injectable()
 export class CommentsService implements ICommentsService {
@@ -48,7 +47,7 @@ export class CommentsService implements ICommentsService {
     if (!comment) {
       return null;
     }
-    const likesInfo = await this.buildLikesInfo(comment._id, user?.id);
+    const likesInfo = await this.buildLikesInfo(comment.id, user?.id);
     delete comment._id;
     delete comment.postId;
     const withReactions = Object.assign(comment, {
@@ -59,7 +58,7 @@ export class CommentsService implements ICommentsService {
   }
 
   async buildLikesInfo(
-    commentObjectId: ObjectId,
+    commentId: string,
     userId?: string,
   ): Promise<{
     likesCount: number;
@@ -67,15 +66,15 @@ export class CommentsService implements ICommentsService {
     myStatus: LikeStatus;
   }> {
     const likesCount = await this.reactionService.likesCountByTargetId(
-      commentObjectId,
+      commentId,
       'comment',
     );
     const dislikesCount = await this.reactionService.dislikesCountByTargetId(
-      commentObjectId,
+      commentId,
       'comment',
     );
     const myStatus = await this.reactionService.getReactionByUserIdAndTargetId(
-      commentObjectId,
+      commentId,
       'comment',
       userId,
     );
@@ -112,7 +111,7 @@ export class CommentsService implements ICommentsService {
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
 
     const commentsViewPromises = resultComments.map(async (comment) => {
-      const likesInfo = await this.buildLikesInfo(comment._id);
+      const likesInfo = await this.buildLikesInfo(comment.id);
       const { _id, ...rest } = comment;
       return { ...rest, likesInfo };
     });
@@ -141,7 +140,7 @@ export class CommentsService implements ICommentsService {
     }
     const userReaction =
       await this.reactionService.getReactionByUserIdAndTargetId(
-        comment._id,
+        comment.id,
         'comment',
         userId,
       );
@@ -158,7 +157,7 @@ export class CommentsService implements ICommentsService {
         target: {
           type: {
             type: 'comment',
-            targetId: comment._id,
+            targetId: comment.id,
           },
         },
       });

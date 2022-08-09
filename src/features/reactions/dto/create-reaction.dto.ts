@@ -6,7 +6,7 @@ export class CreateReactionDto {
   target: {
     type: {
       type: 'comment' | 'post';
-      targetId: ObjectId;
+      targetId: string;
     };
   };
   likeStatus: LikeStatus;

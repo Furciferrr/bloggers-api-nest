@@ -8,8 +8,8 @@ export type ReactionDocument = ReactionDBType & Document;
 class Target {
   @Prop({ type: String, required: true })
   type: 'comment' | 'post';
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  targetId: ObjectId;
+  @Prop({ type: String, required: true })
+  targetId: string;
 }
 
 @Schema()

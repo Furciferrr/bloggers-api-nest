@@ -99,6 +99,7 @@ export class UsersService implements IUserService {
       };
     }
     const hashPassword = await this._generateHash(user.password);
+    const nowDate = add(new Date(), { hours: 1, minutes: 2 });
     const newUser = {
       id: getRandomNumber().toString(),
       login: user.login,
@@ -106,7 +107,7 @@ export class UsersService implements IUserService {
       hashPassword,
       emailConfirmation: {
         confirmationCode: uuidv4(),
-        expirationDate: add(new Date(), { hours: 1, minutes: 2 }),
+        expirationDate: nowDate,
         isConfirmed: true,
       },
       tokenVersion: 1,
