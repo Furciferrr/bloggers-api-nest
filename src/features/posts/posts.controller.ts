@@ -120,6 +120,7 @@ export class PostsController {
       pageSize: string;
     },
     @Req() req: Request,
+    @User() user: UserViewType,
   ) {
     const pageNumber = query.pageNumber;
     const pageSize = query.pageSize;
@@ -131,6 +132,7 @@ export class PostsController {
       id,
       +pageNumber,
       +pageSize,
+      user,
     );
 
     return comments;

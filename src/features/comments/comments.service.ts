@@ -101,6 +101,7 @@ export class CommentsService implements ICommentsService {
     id: string,
     pageNumber = 1,
     pageSize = 10,
+    user: UserViewType,
   ): Promise<ResponseType<CommentView>> {
     const resultComments = await this.commentsRepository.getCommentsByPostId(
       id,
@@ -111,7 +112,7 @@ export class CommentsService implements ICommentsService {
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
 
     const commentsViewPromises = resultComments.map(async (comment) => {
-      const likesInfo = await this.buildLikesInfo(comment.id);
+      const likesInfo = await this.buildLikesInfo(comment.id, user?.id);
       const { _id, ...rest } = comment;
       return { ...rest, likesInfo };
     });

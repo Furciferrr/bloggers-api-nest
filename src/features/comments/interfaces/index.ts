@@ -12,6 +12,7 @@ export interface ICommentsService {
     id: string,
     pageNumber: number,
     pageSize: number,
+    user: UserViewType,
   ): Promise<ResponseType<CommentView>>;
   create(
     postId: string,
