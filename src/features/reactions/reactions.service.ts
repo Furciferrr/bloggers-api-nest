@@ -86,13 +86,15 @@ export class ReactionsService {
     type: 'post' | 'comment',
     userId?: string,
   ): Promise<ReactionViewType | null> {
+    if (!userId) {
+      return null;
+    }
     const reaction =
       await this.reactionRepository.getReactionByUserIdAndTargetId(
         postId,
         type,
         userId,
       );
-
     //const { target, ...rest } = reaction;
     return reaction;
   }
