@@ -53,6 +53,11 @@ export class UsersService implements IUserService {
     };
   }
 
+  async getManyUsers(ids: string[]): Promise<UserViewType[]> {
+    const users = await this.userRepository.getManyUsersByIds(ids);
+    return users;
+  }
+
   async getUserByLoginOrEmail(
     login: string,
     email: string,

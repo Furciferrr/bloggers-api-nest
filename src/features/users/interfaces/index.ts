@@ -28,6 +28,7 @@ export interface IUserService {
   ): Promise<ResponseType<UserViewType>>;
   deleteUserById(id: string): Promise<boolean>;
   getUserById(id: string): Promise<UserViewType | null>;
+  getManyUsers(ids: string[]): Promise<UserViewType[]>;
   createUser(
     user: CreateUserDto,
   ): Promise<

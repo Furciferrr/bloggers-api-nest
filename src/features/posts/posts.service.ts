@@ -95,11 +95,16 @@ export class PostsService implements IPostService {
       'post',
     );
 
-    const userPromises = newestLikes.map(async (like) => {
+    /* const userPromises = newestLikes.map(async (like) => {
       const user = await this.userService.getUserById(like.userId);
       return user;
     });
-    const users = await Promise.all(userPromises);
+    const users = await Promise.all(userPromises); */
+
+    const users = await this.userService.getManyUsers(
+      newestLikes.map((like) => like.userId),
+    );
+
     console.log("USERS:", users)
     return {
       likesCount,
