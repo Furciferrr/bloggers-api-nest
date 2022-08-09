@@ -100,7 +100,7 @@ export class PostsService implements IPostService {
       return user;
     });
     const users = await Promise.all(userPromises);
-
+    console.log("USERS:", users)
     return {
       likesCount,
       dislikesCount,
@@ -109,7 +109,7 @@ export class PostsService implements IPostService {
         return {
           userId: reaction.userId,
           addedAt: reaction.addedAt,
-          login: users.find((user) => user.id === reaction.userId)?.login,
+          login: users.find((user) => user?.id === reaction.userId)?.login,
         };
       }),
     };
