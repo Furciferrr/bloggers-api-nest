@@ -67,7 +67,11 @@ export class PostRepository implements IPostRepository {
   async createPost(
     post: Omit<PostDBType, '_id'>,
   ): Promise<Omit<PostDBType, '_id'>> {
-    return await this.postsCollection.create(post);
+    const conclusion = await (
+      await this.postsCollection.create(post)
+    ).toObject();
+    const { _id, __v, ...rest } = conclusion;
+    return rest as Omit<PostDBType, '_id'>;
   }
 
   async getPostsByBloggerId(
