@@ -19,7 +19,7 @@ import { UserSQLRepository } from './usersSQL.repository';
   ],
   controllers: [UsersController],
   providers: [
-    { provide: UserRepository, useClass: UserRepository },
+    { provide: UserRepository, useClass: UserSQLRepository },
     UsersService,
     AuthGuard,
     MailSender,

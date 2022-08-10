@@ -33,7 +33,7 @@ export class UserRepository implements IUserRepository {
   async getManyUsersByIds(ids: string[]): Promise<UserViewType[]> {
     const users = await this.userModel
       .find({ id: { $in: ids } })
-      .select(['-_id', '-__v']);
+      .select(['id', 'login', '-_id']);
     return users;
   }
 

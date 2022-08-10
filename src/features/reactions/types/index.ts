@@ -13,9 +13,9 @@ export type ReactionDBType = {
   addedAt: Date;
   target: {
     type: 'comment' | 'post';
-    targetId: mongoose.Types.ObjectId;
+    targetId: string;
   };
-  _id: mongoose.Types.ObjectId;
+  //_id: mongoose.Types.ObjectId;
 };
 
 export type ReactionViewType = {

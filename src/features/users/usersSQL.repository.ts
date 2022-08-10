@@ -34,7 +34,7 @@ export class UserSQLRepository implements IUserRepository {
       where login = '${login}'
     ) res;
     `);
-    return JSON.parse(JSON.stringify(user))[0].to_json;
+    return JSON.parse(JSON.stringify(user))[0]?.to_json;
   }
 
   async getUserByLoginOrEmail(
@@ -46,6 +46,18 @@ export class UserSQLRepository implements IUserRepository {
       WHERE login = '${login}' OR email = '${email}'
         `);
     return user[0];
+  }
+
+  async getManyUsersByIds(ids: string[]): Promise<UserViewType[]> {
+    if (!ids.length) {
+      return [];
+    }
+    const users = await this.userRepository.query(`
+      SELECT id, login FROM users
+      WHERE id IN (${ids.join(',')})
+    `);
+
+    return users;
   }
 
   async getUserByEmail(email: string): Promise<UserDBType | null> {

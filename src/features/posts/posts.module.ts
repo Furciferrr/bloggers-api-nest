@@ -29,7 +29,7 @@ import { PostsSQLRepository } from './postsSQL.repository';
   controllers: [PostsController],
   providers: [
     PostsService,
-    { provide: PostRepository, useClass: PostRepository },
+    { provide: PostRepository, useClass: PostsSQLRepository },
     BloggersService,
     ReactionsService,
     UsersService,

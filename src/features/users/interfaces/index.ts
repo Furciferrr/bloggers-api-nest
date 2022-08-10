@@ -8,6 +8,7 @@ export interface IUserRepository {
   getUserByLogin(login: string): Promise<UserDBType | null>;
   getUserByEmail(email: string): Promise<UserDBType | null>;
   getUserById(id: string): Promise<UserDBType | null>;
+  getManyUsersByIds(ids: string[]): Promise<UserViewType[]>;
   getUserByLoginOrEmail(
     login: string,
     email: string,

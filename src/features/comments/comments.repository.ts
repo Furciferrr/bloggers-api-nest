@@ -58,18 +58,12 @@ export class CommentsRepository implements ICommentsRepository {
     return comment;
   }
 
-  async updateReaction(id: string, objectId: ObjectId): Promise<boolean> {
+  async updateReaction(id: string, objectId: string): Promise<boolean> {
     const result = await this.commentsCollection.updateOne(
       { id },
       { $addToSet: { reactions: objectId as any } },
     );
     return result.modifiedCount === 1;
-  }
-
-  async getCommentByIdWithObjectId(
-    id: string,
-  ): Promise<(CommentDBType & { _id: ObjectId }) | null> {
-    return this.commentsCollection.findOne({ id }).select(['-__v']).lean();
   }
 
   async deleteAllComments(): Promise<any> {

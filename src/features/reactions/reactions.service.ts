@@ -23,7 +23,9 @@ export class ReactionsService {
     return this.reactionRepository.create(reaction as any);
   }
 
-  async createCommandUseCase(createReactionDto: CreateReactionDto) {
+  async createCommandUseCase(
+    createReactionDto: CreateReactionDto,
+  ): Promise<CreateReactionCommand> {
     return this.commandBus.execute(
       new CreateReactionCommand(
         createReactionDto.userId,

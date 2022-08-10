@@ -9,6 +9,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ReactionsModule } from '../reactions/reactions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentEntity } from './entities/comment.entity';
+import { CommentsSQLRepository } from './commentsSQL.repository';
 
 @Module({
   imports: [
@@ -18,7 +19,11 @@ import { CommentEntity } from './entities/comment.entity';
     CqrsModule,
   ],
   controllers: [CommentsController],
-  providers: [CommentsService, CommentsRepository, ReactionsService],
+  providers: [
+    CommentsService,
+    { provide: CommentsRepository, useClass: CommentsSQLRepository },
+    ReactionsService,
+  ],
   exports: [CommentsRepository, CommentsService],
 })
 export class CommentsModule {}

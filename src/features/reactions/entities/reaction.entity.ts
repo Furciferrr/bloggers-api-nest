@@ -3,9 +3,9 @@ import { PostEntity } from 'src/features/posts/entities/post.entity';
 import { UserEntity } from 'src/features/users/entities/user.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -17,7 +17,7 @@ export class PostReactionEntity {
   likeStatus: string;
   @ManyToOne(() => UserEntity, (user) => user.id, { eager: true })
   user: UserEntity;
-  @Column()
+  @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;
   @ManyToOne(() => PostEntity, (post) => post.reactions)
   target: PostEntity;
@@ -31,7 +31,7 @@ export class CommentReactionEntity {
   likeStatus: string;
   @ManyToOne(() => UserEntity, (user) => user.id, { eager: true })
   user: UserEntity;
-  @Column()
+  @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;
   @ManyToOne(() => CommentEntity, (comment) => comment.reactions)
   target: CommentEntity;

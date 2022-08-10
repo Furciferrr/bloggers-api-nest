@@ -5,7 +5,6 @@ import { PostEntity } from './entities/post.entity';
 import { PostDBType } from './types';
 import { IPostRepository } from './interfaces';
 import { UpdatePostDto } from './dto/update-post.dto';
-import mongoose, { ObjectId } from 'mongoose';
 import { DBType } from 'src/types';
 
 @Injectable()
@@ -44,13 +43,6 @@ export class PostsSQLRepository implements IPostRepository {
     return posts[0];
   }
 
-  async getPostByIdWithObjectId(
-    id: string,
-  ): Promise<(PostDBType & { _id: ObjectId }) | null> {
-    return '' as any;
-    //.populate('-_id -__v -target');
-  }
-
   async deletePostById(id: string): Promise<boolean> {
     const deletedPost = await this.postsRepository.query(`
       DELETE FROM posts WHERE id = '${id}'
@@ -59,22 +51,22 @@ export class PostsSQLRepository implements IPostRepository {
   }
 
   async deletePostsByBloggerId(id: string): Promise<boolean> {
-    return '' as any;
+    const deletedPost = await this.postsRepository.query(`
+      DELETE FROM posts WHERE "bloggerId" = '${id}'
+    `);
+    return deletedPost[1] === 1;
   }
 
   async updatePostById(id: string, postDto: UpdatePostDto): Promise<boolean> {
-    const updatedUser = await this.postsRepository.query(`
+    const updatedPost = await this.postsRepository.query(`
       UPDATE posts SET ${Object.keys(postDto)
         .map((key) => `"${key}" = '${postDto[key]}'`)
         .join(', ')}
         WHERE id = '${id}'`);
-    return updatedUser;
+    return updatedPost;
   }
 
-  async updateReaction(
-    id: string,
-    objectId: mongoose.Types.ObjectId,
-  ): Promise<boolean> {
+  async updateReaction(id: string, targetId: string): Promise<boolean> {
     return true;
   }
 

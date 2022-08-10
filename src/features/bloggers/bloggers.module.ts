@@ -20,7 +20,7 @@ import { BloggersSQLRepository } from './bloggersSQL.repository';
   controllers: [BloggersController],
   providers: [
     BloggersService,
-    { provide: BloggerRepository, useClass: BloggerRepository },
+    { provide: BloggerRepository, useClass: BloggersSQLRepository },
   ],
   exports: [BloggerRepository],
 })

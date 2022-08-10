@@ -132,9 +132,7 @@ export class CommentsService implements ICommentsService {
     updateLikeStatusDto: UpdateLikeStatusDto,
     userId: string,
   ): Promise<any> {
-    const comment = await this.commentsRepository.getCommentByIdWithObjectId(
-      id,
-    );
+    const comment = await this.commentsRepository.findOne(id);
 
     if (!comment) {
       return false;
@@ -166,7 +164,7 @@ export class CommentsService implements ICommentsService {
         return false;
       }
 
-      this.commentsRepository.updateReaction(id, result._id);
+      this.commentsRepository.updateReaction(id, comment.id);
 
       return result;
     }

@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongoose';
 import { LikeStatus } from '../types';
 
 export class CreateReactionCommand {

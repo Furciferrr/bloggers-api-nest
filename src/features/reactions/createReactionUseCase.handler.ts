@@ -2,7 +2,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { getRandomNumber } from 'src/shared/utils';
 import { CreateReactionCommand } from './commands/create-reaction.command';
 import { ReactionsRepository } from './reactions.repository';
-import { ReactionDBType } from './types';
 
 @CommandHandler(CreateReactionCommand)
 export class CreateReactionHandler
@@ -16,6 +15,6 @@ export class CreateReactionHandler
       id: getRandomNumber().toString(),
       addedAt: new Date(),
     };
-    return this.reactionRepository.create(reaction as any);
+    return this.reactionRepository.create(reaction);
   }
 }

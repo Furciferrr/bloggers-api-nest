@@ -3,6 +3,7 @@ import { CommentReactionEntity } from 'src/features/reactions/entities/reaction.
 import { UserEntity } from 'src/features/users/entities/user.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -17,7 +18,7 @@ export class CommentEntity {
   content: string;
   @ManyToOne(() => UserEntity, (user) => user.id, { eager: true })
   user: UserEntity;
-  @Column()
+  @CreateDateColumn({ type: 'timestamp' })
   addedAt: string;
   @ManyToOne(() => PostEntity, (post) => post.comments)
   post: PostEntity;

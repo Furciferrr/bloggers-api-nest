@@ -20,7 +20,10 @@ export class PostEntity {
   shortDescription: string;
   @Column()
   content: string;
-  @ManyToOne(() => BloggerEntity, (blogger) => blogger.posts, { eager: true })
+  @ManyToOne(() => BloggerEntity, (blogger) => blogger.posts, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   blogger: BloggerEntity;
   @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;

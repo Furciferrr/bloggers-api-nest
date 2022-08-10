@@ -95,17 +95,9 @@ export class PostsService implements IPostService {
       'post',
     );
 
-    /* const userPromises = newestLikes.map(async (like) => {
-      const user = await this.userService.getUserById(like.userId);
-      return user;
-    });
-    const users = await Promise.all(userPromises); */
-
     const users = await this.userService.getManyUsers(
       newestLikes.map((like) => like.userId),
     );
-
-    console.log("USERS:", users)
     return {
       likesCount,
       dislikesCount,
@@ -121,7 +113,7 @@ export class PostsService implements IPostService {
   }
 
   async findOne(id: string, user?: UserViewType): Promise<PostViewType | null> {
-    const post = await this.postRepository.getPostByIdWithObjectId(id);
+    const post = await this.postRepository.getPostById(id);
     if (!post) {
       return null;
     }
@@ -131,7 +123,6 @@ export class PostsService implements IPostService {
       user?.id,
     );
 
-    delete post._id;
     delete post.reactions;
     const withReactions = Object.assign(post, {
       extendedLikesInfo,
@@ -209,7 +200,6 @@ export class PostsService implements IPostService {
         'post',
         userId,
       );
-
     if (userReaction) {
       const result = await this.reactionService.update(userReaction.id, {
         likeStatus: updateLikeStatusDto.likeStatus,
@@ -230,7 +220,7 @@ export class PostsService implements IPostService {
         return false;
       }
 
-      this.postRepository.updateReaction(id, result._id);
+      this.postRepository.updateReaction(id, post.id);
 
       return result;
     }

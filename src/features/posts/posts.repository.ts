@@ -25,20 +25,16 @@ export class PostRepository implements IPostRepository {
   async getTotalCount(): Promise<number> {
     return await this.postsCollection.countDocuments();
   }
+
   async getPostById(id: string): Promise<PostDBType | null> {
     return this.postsCollection.findOne({ id }).select(['-__v']).lean();
-  }
-  async getPostByIdWithObjectId(
-    id: string,
-  ): Promise<(PostDBType & { _id: ObjectId }) | null> {
-    return this.postsCollection.findOne({ id }).select(['-__v']).lean();
-    //.populate('-_id -__v -target');
   }
 
   async deletePostById(id: string): Promise<boolean> {
     const result = await this.postsCollection.deleteOne({ id });
     return result.deletedCount === 1;
   }
+
   async deletePostsByBloggerId(id: string): Promise<boolean> {
     try {
       await this.postsCollection.deleteMany({ bloggerId: id });

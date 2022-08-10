@@ -11,6 +11,7 @@ import {
   CommentReactionEntity,
   PostReactionEntity,
 } from './entities/reaction.entity';
+import { ReactionsSQLRepository } from './reactionsSQL.repository';
 
 export const CommandHandlers = [CreateReactionHandler];
 
@@ -25,7 +26,7 @@ export const CommandHandlers = [CreateReactionHandler];
   controllers: [ReactionsController],
   providers: [
     ReactionsService,
-    { provide: ReactionsRepository, useClass: ReactionsRepository },
+    { provide: ReactionsRepository, useClass: ReactionsSQLRepository },
     ...CommandHandlers,
   ],
   exports: [ReactionsRepository],
