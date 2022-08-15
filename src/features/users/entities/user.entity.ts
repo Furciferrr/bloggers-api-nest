@@ -10,7 +10,7 @@ import {
 
 @Entity('confirmations')
 export class ConfirmationEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   confirmationCode: string;

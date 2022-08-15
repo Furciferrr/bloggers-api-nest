@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { UsersModule } from '../src/features/users/users.module';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import ormConfig from '../src/ormConfig';
 import { UserEntity } from '../src/features/users/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
 import { Repository } from 'typeorm';
+import { UsersModule } from '../src/features/users/users.module';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;

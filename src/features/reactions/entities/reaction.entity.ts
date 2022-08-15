@@ -11,7 +11,7 @@ import {
 
 @Entity('postsReactions')
 export class PostReactionEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ select: false })
   likeStatus: string;
@@ -25,7 +25,7 @@ export class PostReactionEntity {
 
 @Entity('commentsReactions')
 export class CommentReactionEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ select: false })
   likeStatus: string;
