@@ -79,7 +79,7 @@ export class ReactionsSQLRepository implements IReactionsRepository {
       WHERE "targetId" = '${targetId}' AND "likeStatus" = '${LikeStatus.Like}';
       `);
     }
-    return result[0].count;
+    return +result[0].count;
   }
 
   async dislikesCountByTargetId(
@@ -98,7 +98,7 @@ export class ReactionsSQLRepository implements IReactionsRepository {
       WHERE "targetId" = '${targetId}' AND "likeStatus" = '${LikeStatus.Dislike}';
       `);
     }
-    return result[0].count;
+    return +result[0].count;
   }
 
   async getNewestReactionsByTargetId(
