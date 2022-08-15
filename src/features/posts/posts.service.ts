@@ -25,6 +25,7 @@ export class PostsService implements IPostService {
     const blogger = await this.bloggerRepository.getBloggerById(
       createPostDto.bloggerId,
     );
+
     if (!blogger) {
       return false;
     }
@@ -33,7 +34,7 @@ export class PostsService implements IPostService {
       title: createPostDto.title,
       shortDescription: createPostDto.shortDescription,
       content: createPostDto.content,
-      bloggerId: createPostDto.bloggerId,
+      bloggerId: blogger.id.toString(),
       bloggerName: blogger.name,
       reactions: [],
       addedAt: new Date(),

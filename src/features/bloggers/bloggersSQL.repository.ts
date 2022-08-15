@@ -20,7 +20,7 @@ export class BloggersSQLRepository implements IBloggerRepository {
     searchTerm?: string,
   ): Promise<Array<Blogger>> {
     const result = await this.bloggerRepository.query(`
-      SELECT id:text, name, youtubeUrl
+      SELECT id:text, name, "youtubeUrl"
       FROM bloggers b
       WHERE name ILIKE '%${searchTerm || ''}%'
       ORDER BY b.id
@@ -48,7 +48,7 @@ export class BloggersSQLRepository implements IBloggerRepository {
 
   async getBloggerById(id: string): Promise<Blogger | null> {
     const bloggers: Blogger[] = await this.bloggerRepository.query(`
-      SELECT * FROM bloggers
+      SELECT id::text, name, "youtubeUrl" FROM bloggers
       WHERE id = ${id}
     `);
 
@@ -71,7 +71,7 @@ export class BloggersSQLRepository implements IBloggerRepository {
 
   async createBlogger(blogger: BloggerDBType): Promise<BloggerDBType> {
     const result = await this.bloggerRepository.query(`
-    INSERT INTO bloggers ("name", "youtubeUrl")  VALUES ('${blogger.name}', '${blogger.youtubeUrl}') RETURNING *`);
+    INSERT INTO bloggers ("name", "youtubeUrl")  VALUES ('${blogger.name}', '${blogger.youtubeUrl}') RETURNING *, id::text;`);
     return result[0];
   }
 }

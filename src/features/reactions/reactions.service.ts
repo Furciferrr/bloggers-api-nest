@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { ObjectId } from 'mongoose';
 import { getRandomNumber } from '../../shared/utils';
 import { CreateReactionCommand } from './commands/create-reaction.command';
 import { CreateReactionDto } from './dto/create-reaction.dto';
