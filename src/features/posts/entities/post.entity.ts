@@ -12,7 +12,7 @@ import {
 
 @Entity('posts')
 export class PostEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
   @Column()
   title: string;

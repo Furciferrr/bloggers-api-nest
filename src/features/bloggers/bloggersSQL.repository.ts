@@ -20,7 +20,7 @@ export class BloggersSQLRepository implements IBloggerRepository {
     searchTerm?: string,
   ): Promise<Array<Blogger>> {
     const result = await this.bloggerRepository.query(`
-      SELECT *
+      SELECT id:text, name, youtubeUrl
       FROM bloggers b
       WHERE name ILIKE '%${searchTerm || ''}%'
       ORDER BY b.id

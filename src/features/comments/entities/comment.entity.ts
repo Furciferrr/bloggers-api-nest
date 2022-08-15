@@ -12,7 +12,7 @@ import {
 
 @Entity('comments')
 export class CommentEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
   @Column()
   content: string;

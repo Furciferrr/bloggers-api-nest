@@ -16,7 +16,7 @@ export class PostsSQLRepository implements IPostRepository {
 
   async getPosts(pageNumber: number, pageSize: number): Promise<PostDBType[]> {
     const result = await this.postsRepository.query(`
-      SELECT p.*, b.name as "bloggerName"
+      SELECT p.*, p.id::text, b.name as "bloggerName"
       FROM posts p
       JOIN bloggers b ON p."bloggerId" = b.id
       ORDER BY p.id
@@ -35,7 +35,7 @@ export class PostsSQLRepository implements IPostRepository {
 
   async getPostById(id: string): Promise<PostDBType | null> {
     const posts: PostDBType[] = await this.postsRepository.query(`
-      SELECT * FROM posts
+      SELECT p.*, p.id::text FROM posts p
       WHERE id = '${id}'
     `);
     if (!posts.length) {
@@ -94,7 +94,7 @@ export class PostsSQLRepository implements IPostRepository {
   ): Promise<Omit<PostDBType, '_id'>> {
     const result = await this.postsRepository.query(`
     INSERT INTO posts ("title", "content", "shortDescription", "bloggerId")  
-    VALUES ('${post.title}', '${post.content}', '${post.shortDescription}', ${post.bloggerId}) Returning *;`);
+    VALUES ('${post.title}', '${post.content}', '${post.shortDescription}', ${post.bloggerId}) Returning *, id::text;`);
     return result[0];
   }
 }

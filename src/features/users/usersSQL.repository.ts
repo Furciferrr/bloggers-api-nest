@@ -14,7 +14,7 @@ export class UserSQLRepository implements IUserRepository {
 
   async getUsers(pageNumber = 1, pageSize = 10): Promise<UserViewType[]> {
     return this.userRepository.query(`
-      SELECT u.id, login FROM users u
+      SELECT u.id::text, login FROM users u
       JOIN confirmations ON "u"."confirmationId" = "confirmations"."id"
       WHERE "isConfirmed" = true
       ORDER BY u.id
@@ -105,7 +105,7 @@ export class UserSQLRepository implements IUserRepository {
 
   async getUserById(id: string): Promise<UserDBType | null> {
     const user: UserDBType[] = await this.userRepository.query(`
-      SELECT id, login FROM users
+      SELECT id::text, login FROM users
       WHERE id = '${id}'
     `);
     if (!user) {
@@ -138,7 +138,9 @@ export class UserSQLRepository implements IUserRepository {
       INSERT INTO users ("login", "hashPassword", "email", "tokenVersion", "confirmationId")
       VALUES ('${userEntity.login}', '${userEntity.hashPassword}', '${
       userEntity.email
-    }', ${userEntity.tokenVersion}, (select id from confirm)) RETURNING *;`);
+    }', ${
+      userEntity.tokenVersion
+    }, (select id from confirm)) RETURNING id::text, login;`);
     return conclusion[0];
   }
 }
