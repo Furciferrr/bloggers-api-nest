@@ -14,6 +14,7 @@ import { UserSQLRepository } from './usersSQL.repository';
 @Module({
   imports: [
     //MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    
     TypeOrmModule.forFeature([UserEntity]),
     ConfigModule,
   ],
