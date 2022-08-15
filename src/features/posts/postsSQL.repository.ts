@@ -94,7 +94,7 @@ export class PostsSQLRepository implements IPostRepository {
   ): Promise<Omit<PostDBType, '_id'>> {
     const result = await this.postsRepository.query(`
     INSERT INTO posts ("title", "content", "shortDescription", "bloggerId")  
-    VALUES ('${post.title}', '${post.content}', '${post.shortDescription}', ${post.bloggerId}) Returning *, id::text;`);
+    VALUES ('${post.title}', '${post.content}', '${post.shortDescription}', ${post.bloggerId}) Returning *, id::text, "bloggerId"::text;`);
     return result[0];
   }
 }

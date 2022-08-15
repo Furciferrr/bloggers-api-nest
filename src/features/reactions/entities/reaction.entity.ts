@@ -15,7 +15,10 @@ export class PostReactionEntity {
   id: string;
   @Column({ select: false })
   likeStatus: string;
-  @ManyToOne(() => UserEntity, (user) => user.id, { eager: true })
+  @ManyToOne(() => UserEntity, (user) => user.id, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user: UserEntity;
   @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;
@@ -29,7 +32,10 @@ export class CommentReactionEntity {
   id: string;
   @Column({ select: false })
   likeStatus: string;
-  @ManyToOne(() => UserEntity, (user) => user.id, { eager: true })
+  @ManyToOne(() => UserEntity, (user) => user.id, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user: UserEntity;
   @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;

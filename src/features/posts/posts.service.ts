@@ -34,15 +34,16 @@ export class PostsService implements IPostService {
       title: createPostDto.title,
       shortDescription: createPostDto.shortDescription,
       content: createPostDto.content,
-      bloggerId: blogger.id.toString(),
+      bloggerId: blogger.id,
       bloggerName: blogger.name,
       reactions: [],
       addedAt: new Date(),
     };
     const conclusion = await this.postRepository.createPost(newPost);
+
     const extendedLikesInfo = await this.buildExtendedLikesInfo(conclusion.id);
 
-    return { ...conclusion, extendedLikesInfo };
+    return { ...conclusion, bloggerName: blogger.name, extendedLikesInfo };
   }
 
   async findAll(
