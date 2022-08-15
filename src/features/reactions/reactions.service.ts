@@ -96,6 +96,7 @@ export class ReactionsService {
         type,
         userId,
       );
+      
     //const { target, ...rest } = reaction;
     return reaction;
   }
