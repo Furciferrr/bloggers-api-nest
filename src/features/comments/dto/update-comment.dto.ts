@@ -1,5 +1,5 @@
 import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
-import { IsNotBlank } from 'src/decorators/validate.decorator';
+import { IsNotBlank } from '../../../decorators/validate.decorator';
 
 export class UpdateCommentDto {
   @IsNotEmpty({ message: 'content field is required' })

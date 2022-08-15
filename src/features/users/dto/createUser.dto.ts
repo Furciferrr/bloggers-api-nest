@@ -1,5 +1,5 @@
 import { IsNotEmpty, MaxLength, MinLength, IsEmail } from 'class-validator';
-import { IsNotBlank } from 'src/decorators/validate.decorator';
+import { IsNotBlank } from '../../../decorators/validate.decorator';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'username field is required' })

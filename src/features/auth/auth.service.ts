@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UserRepository } from 'src/features/users/users.repository';
+import { UserRepository } from '../../features/users/users.repository';
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import { verify } from 'jsonwebtoken';
-import { UserDBType } from 'src/features/users/types';
-import { UsersService } from 'src/features/users/users.service';
-import { ErrorType, ServiceResponseType } from 'src/types';
-import { MailSender } from 'src/adapters/email-adapter';
+import { UserDBType } from '../../features/users/types';
+import { UsersService } from '../../features/users/users.service';
+import { ErrorType, ServiceResponseType } from '../../types';
+import { MailSender } from '../../adapters/email-adapter';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   RequestAttempt,

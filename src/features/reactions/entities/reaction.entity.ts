@@ -1,6 +1,6 @@
-import { CommentEntity } from 'src/features/comments/entities/comment.entity';
-import { PostEntity } from 'src/features/posts/entities/post.entity';
-import { UserEntity } from 'src/features/users/entities/user.entity';
+import { CommentEntity } from '../../../features/comments/entities/comment.entity';
+import { PostEntity } from '../../../features/posts/entities/post.entity';
+import { UserEntity } from '../../../features/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

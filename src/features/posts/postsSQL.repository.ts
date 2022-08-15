@@ -16,8 +16,9 @@ export class PostsSQLRepository implements IPostRepository {
 
   async getPosts(pageNumber: number, pageSize: number): Promise<PostDBType[]> {
     const result = await this.postsRepository.query(`
-      SELECT *
+      SELECT p.*, b.name as "bloggerName"
       FROM posts p
+      JOIN bloggers b ON p."bloggerId" = b.id
       ORDER BY p.id
       LIMIT ${pageSize}
       OFFSET ${(pageNumber - 1) * pageSize};

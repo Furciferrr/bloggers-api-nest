@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import { UserDBType, UserViewType } from './types';
 import { CreateUserDto } from './dto/createUser.dto';
-import { getRandomNumber } from 'src/shared/utils';
+import { getRandomNumber } from '../../shared/utils';
 import { UserRepository } from './users.repository';
 import { ConfigService } from '@nestjs/config';
 import { IUserService } from './interfaces';

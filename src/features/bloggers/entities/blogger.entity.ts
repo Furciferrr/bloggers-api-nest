@@ -1,4 +1,4 @@
-import { PostEntity } from 'src/features/posts/entities/post.entity';
+import { PostEntity } from '../../../features/posts/entities/post.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('bloggers')

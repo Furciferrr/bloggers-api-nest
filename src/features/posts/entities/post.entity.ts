@@ -1,6 +1,6 @@
-import { BloggerEntity } from 'src/features/bloggers/entities/blogger.entity';
-import { CommentEntity } from 'src/features/comments/entities/comment.entity';
-import { PostReactionEntity } from 'src/features/reactions/entities/reaction.entity';
+import { BloggerEntity } from '../../../features/bloggers/entities/blogger.entity';
+import { CommentEntity } from '../../../features/comments/entities/comment.entity';
+import { PostReactionEntity } from '../../../features/reactions/entities/reaction.entity';
 import {
   Column,
   CreateDateColumn,

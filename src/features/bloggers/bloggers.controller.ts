@@ -11,12 +11,12 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { BaseAuthGuard } from 'src/guards/base-auth.guard';
-import { PostsService } from 'src/features/posts/posts.service';
+import { BaseAuthGuard } from '../../guards/base-auth.guard';
+import { PostsService } from '../../features/posts/posts.service';
 import { BloggersService } from './bloggers.service';
 import { CreateBloggerDto } from './dto/create-blogger.dto';
 import { UpdateBloggerDto } from './dto/update-blogger.dto';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../../decorators/user.decorator';
 import { UserViewType } from '../users/types';
 
 @Controller('bloggers')

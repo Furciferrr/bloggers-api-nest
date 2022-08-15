@@ -5,7 +5,7 @@ import { BloggerRepository } from './bloggers.repository';
 import { Blogger, BloggerSchema } from './entities/blogger.schema';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PostsModule } from 'src/features/posts/posts.module';
+import { PostsModule } from '../../features/posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BloggerEntity } from './entities/blogger.entity';
 import { BloggersSQLRepository } from './bloggersSQL.repository';

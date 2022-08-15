@@ -1,4 +1,4 @@
-import { CommentEntity } from 'src/features/comments/entities/comment.entity';
+import { CommentEntity } from '../../../features/comments/entities/comment.entity';
 import {
   Column,
   Entity,
@@ -11,7 +11,7 @@ import {
 @Entity('confirmations')
 export class ConfirmationEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
   @Column()
   confirmationCode: string;
   @Column()
@@ -22,7 +22,7 @@ export class ConfirmationEntity {
 
 @Entity('users')
 export class UserEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column()
   login: string;
