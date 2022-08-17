@@ -147,7 +147,7 @@ export class CommentsService implements ICommentsService {
         'comment',
         userId,
       );
-
+;
     if (userReaction) {
       const result = await this.reactionService.update(userReaction.id, {
         likeStatus: updateLikeStatusDto.likeStatus,

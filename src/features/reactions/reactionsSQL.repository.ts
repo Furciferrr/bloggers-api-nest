@@ -52,13 +52,13 @@ export class ReactionsSQLRepository implements IReactionsRepository {
     const postResult = await this.postsReactionsRepository.query(`
       UPDATE "postsReactions"
       SET "likeStatus" = '${reaction.likeStatus}'
-      WHERE "id" = '${id}'
+      WHERE id = '${id}'
     `);
 
     const commentResult = await this.postsReactionsRepository.query(`
-      UPDATE "postsReactions"
+      UPDATE "commentsReactions"
       SET "likeStatus" = '${reaction.likeStatus}'
-      WHERE "id" = '${id}'
+      WHERE id = '${id}'
     `);
     return postResult || commentResult;
   }
