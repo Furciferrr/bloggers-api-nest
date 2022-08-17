@@ -15,8 +15,10 @@ export class CommentsSQLRepository implements ICommentsRepository {
 
   async findOne(id: string): Promise<CommentDBType | null> {
     const result = await this.commentsRepository.query(`
-      SELECT * FROM comments
-      WHERE id = '${id}'
+      SELECT c.id::text, content, "addedAt", c."userId"::text, login as "userLogin"
+      FROM comments c 
+      JOIN users u ON c."userId" = u.id
+      WHERE c.id = ${id}
     `);
     if (!result.length) {
       return null;
