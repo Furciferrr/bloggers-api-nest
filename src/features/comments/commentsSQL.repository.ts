@@ -46,8 +46,10 @@ export class CommentsSQLRepository implements ICommentsRepository {
     pageSize: number,
   ): Promise<Array<CommentDBType>> {
     const conclusion = await this.commentsRepository.query(`
-      SELECT * FROM comments
-      WHERE postId = '${id}'
+      SELECT c.id::text, content, "addedAt", c."userId"::text, login as "userLogin"
+      FROM comments c 
+      JOIN users u ON c."userId" = u.id
+      WHERE "postId" = ${id}
       ORDER BY id
       LIMIT ${pageSize}
       OFFSET ${(pageNumber - 1) * pageSize};`);
@@ -56,9 +58,9 @@ export class CommentsSQLRepository implements ICommentsRepository {
 
   async getTotalCount(postId: string): Promise<number> {
     const result = await this.commentsRepository.query(`
-      SELECT COUNT(*) FROM comments WHERE postId = '${postId}'
+      SELECT COUNT(*) FROM comments WHERE "postId" = '${postId}'
     `);
-    return result[0].count;
+    return +result[0].count;
   }
 
   async create(
@@ -66,7 +68,7 @@ export class CommentsSQLRepository implements ICommentsRepository {
   ): Promise<Omit<CommentDBType, '_id'>> {
     const result = await this.commentsRepository.query(`
     INSERT INTO comments ("content", "userId", "postId")  
-    VALUES ('${comment.content}', '${comment.userId}', '${comment.postId}') Returning *;`);
+    VALUES ('${comment.content}', '${comment.userId}', '${comment.postId}') Returning id::text, content, "userId"::text, "addedAt";`);
     return result[0];
   }
 

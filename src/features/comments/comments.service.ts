@@ -30,15 +30,19 @@ export class CommentsService implements ICommentsService {
       addedAt: new Date().toISOString(),
       postId,
     };
-    this.commentsRepository.create(newComment);
+    const result = await this.commentsRepository.create(newComment);
     delete newComment.postId;
-    const withReactions = Object.assign(newComment, {
-      likesInfo: {
-        likesCount: 0,
-        dislikesCount: 0,
-        myStatus: LikeStatus.None,
+
+    const withReactions = Object.assign(
+      { ...result, userLogin: user.login },
+      {
+        likesInfo: {
+          likesCount: 0,
+          dislikesCount: 0,
+          myStatus: LikeStatus.None,
+        },
       },
-    });
+    );
     return withReactions;
   }
 

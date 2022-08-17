@@ -75,7 +75,7 @@ export class ReactionsSQLRepository implements IReactionsRepository {
       `);
     } else if (type === 'comment') {
       result = await this.commentsReactionsRepository.query(`
-      SELECT COUNT(*) FROM "postsReactions" 
+      SELECT COUNT(*) FROM "commentsReactions" 
       WHERE "targetId" = '${targetId}' AND "likeStatus" = '${LikeStatus.Like}';
       `);
     }
@@ -94,7 +94,7 @@ export class ReactionsSQLRepository implements IReactionsRepository {
       `);
     } else if (type === 'comment') {
       result = await this.commentsReactionsRepository.query(`
-      SELECT COUNT(*) FROM "postsReactions" 
+      SELECT COUNT(*) FROM "commentsReactions" 
       WHERE "targetId" = '${targetId}' AND "likeStatus" = '${LikeStatus.Dislike}';
       `);
     }
