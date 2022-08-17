@@ -27,10 +27,17 @@ export class PostsSQLRepository implements IPostRepository {
   }
 
   async getTotalCount(filter: FilterQuery<PostEntity>): Promise<number> {
-    const result = await this.postsRepository.query(`
+    let result;
+    if (Object.keys(filter).length > 0) {
+      result = await this.postsRepository.query(`
       SELECT COUNT(*) FROM posts
       WHERE "${Object.keys(filter)[0]}" = '${filter[Object.keys(filter)[0]]}'
     `);
+    } else {
+      result = await this.postsRepository.query(`
+      SELECT COUNT(*) FROM posts
+    `);
+    }
     return +result[0].count;
   }
 

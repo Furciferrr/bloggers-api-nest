@@ -11,7 +11,7 @@ import { FilterQuery as FilterQueryTypeOrm } from 'typeorm';
 export interface IPostRepository {
   getPosts(pageNumber: number, pageSize: number): Promise<PostDBType[]>;
   getTotalCount(
-    filter: FilterQuery<PostDocument> | FilterQueryTypeOrm<any>,
+    filter?: FilterQuery<PostDocument> | FilterQueryTypeOrm<any>,
   ): Promise<number>;
   getPostById(id: string): Promise<PostDBType | null>;
   deletePostById(id: string): Promise<boolean>;
