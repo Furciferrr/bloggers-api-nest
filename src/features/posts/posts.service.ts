@@ -231,4 +231,9 @@ export class PostsService implements IPostService {
       return result;
     }
   }
+
+  async deleteAllPosts() {
+    const checkResult = await this.postRepository.deleteAllPosts();
+    return checkResult;
+  }
 }

@@ -20,8 +20,12 @@ export class CommentEntity {
   user: UserEntity;
   @CreateDateColumn({ type: 'timestamp' })
   addedAt: string;
-  @ManyToOne(() => PostEntity, (post) => post.comments)
+  @ManyToOne(() => PostEntity, (post) => post.comments, {
+    onDelete: 'CASCADE',
+  })
   post: PostEntity;
-  @OneToMany(() => CommentReactionEntity, (comment) => comment.target)
+  @OneToMany(() => CommentReactionEntity, (comment) => comment.target, {
+    onDelete: 'CASCADE',
+  })
   reactions: CommentReactionEntity[];
 }

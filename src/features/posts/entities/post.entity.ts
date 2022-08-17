@@ -27,8 +27,12 @@ export class PostEntity {
   blogger: BloggerEntity;
   @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;
-  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  @OneToMany(() => CommentEntity, (comment) => comment.post, {
+    onDelete: 'CASCADE',
+  })
   comments: CommentEntity[];
-  @OneToMany(() => PostReactionEntity, (comment) => comment.target)
+  @OneToMany(() => PostReactionEntity, (reaction) => reaction.target, {
+    onDelete: 'CASCADE',
+  })
   reactions: PostReactionEntity[];
 }

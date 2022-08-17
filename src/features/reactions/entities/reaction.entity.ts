@@ -22,7 +22,9 @@ export class PostReactionEntity {
   user: UserEntity;
   @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;
-  @ManyToOne(() => PostEntity, (post) => post.reactions)
+  @ManyToOne(() => PostEntity, (post) => post.reactions, {
+    onDelete: 'CASCADE',
+  })
   target: PostEntity;
 }
 
@@ -39,6 +41,8 @@ export class CommentReactionEntity {
   user: UserEntity;
   @CreateDateColumn({ type: 'timestamp' })
   addedAt: Date;
-  @ManyToOne(() => CommentEntity, (comment) => comment.reactions)
+  @ManyToOne(() => CommentEntity, (comment) => comment.reactions, {
+    onDelete: 'CASCADE',
+  })
   target: CommentEntity;
 }
