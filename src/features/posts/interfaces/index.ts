@@ -29,6 +29,7 @@ export interface IPostService {
   findAll(
     pageNumber: number,
     pageSize: number,
+    userId?: string,
   ): Promise<ResponseType<PostViewType>>;
   getPostsByBloggerId(
     bloggerId: string,

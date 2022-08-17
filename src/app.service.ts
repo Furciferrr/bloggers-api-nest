@@ -13,7 +13,7 @@ export class AppService {
   }
 
   async resetAllData() {
-    //this.usersService.deleteAllUsers();
+    this.usersService.deleteAllUsers();
     this.postsService.deleteAllPosts();
     return;
   }

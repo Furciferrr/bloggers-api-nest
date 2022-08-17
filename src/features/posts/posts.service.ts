@@ -49,6 +49,7 @@ export class PostsService implements IPostService {
   async findAll(
     pageNumber: number,
     pageSize: number,
+    userId?: string,
   ): Promise<ResponseType<PostViewType>> {
     const posts = await this.postRepository.getPosts(
       pageNumber || 1,
@@ -58,7 +59,10 @@ export class PostsService implements IPostService {
     const totalCount = await this.postRepository.getTotalCount({});
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
     const postsViewPromises = posts.map(async (post) => {
-      const extendedLikesInfo = await this.buildExtendedLikesInfo(post?.id);
+      const extendedLikesInfo = await this.buildExtendedLikesInfo(
+        post?.id,
+        userId,
+      );
       const { _id, reactions, ...rest } = post;
       return { ...rest, extendedLikesInfo };
     });
@@ -96,7 +100,6 @@ export class PostsService implements IPostService {
       3,
       'post',
     );
-
 
     const users = await this.userService.getManyUsers(
       newestLikes.map((like) => like.userId),

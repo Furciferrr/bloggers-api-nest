@@ -54,8 +54,13 @@ export class PostsController {
       pageNumber: string;
       pageSize: string;
     },
+    @User('id') userId: string,
   ) {
-    return this.postsService.findAll(+query.pageNumber, +query.pageSize);
+    return this.postsService.findAll(
+      +query.pageNumber,
+      +query.pageSize,
+      userId,
+    );
   }
 
   @Get(':id')
