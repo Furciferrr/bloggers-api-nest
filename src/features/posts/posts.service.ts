@@ -97,6 +97,7 @@ export class PostsService implements IPostService {
       'post',
     );
 
+
     const users = await this.userService.getManyUsers(
       newestLikes.map((like) => like.userId),
     );
@@ -106,7 +107,7 @@ export class PostsService implements IPostService {
       myStatus: myStatus?.likeStatus || LikeStatus.None,
       newestLikes: newestLikes.map((reaction) => {
         return {
-          userId: reaction.userId,
+          userId: reaction.userId.toString(),
           addedAt: reaction.addedAt,
           login: users.find((user) => user?.id === reaction.userId)?.login,
         };
