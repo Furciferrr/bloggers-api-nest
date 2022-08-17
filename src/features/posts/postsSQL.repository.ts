@@ -19,7 +19,7 @@ export class PostsSQLRepository implements IPostRepository {
       SELECT p.id::text, p.title, p."shortDescription", p.content, p."addedAt", p."bloggerId"::text, name as "bloggerName" 
       FROM posts p
       JOIN bloggers b ON p."bloggerId" = b.id
-      ORDER BY p.id
+      ORDER BY p."addedAt"
       LIMIT ${pageSize}
       OFFSET ${(pageNumber - 1) * pageSize};
     `);
