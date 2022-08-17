@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FilterQuery, Repository } from 'typeorm';
 import { PostEntity } from './entities/post.entity';
 import { PostDBType } from './types';
 import { IPostRepository } from './interfaces';
@@ -16,7 +16,7 @@ export class PostsSQLRepository implements IPostRepository {
 
   async getPosts(pageNumber: number, pageSize: number): Promise<PostDBType[]> {
     const result = await this.postsRepository.query(`
-      SELECT p.*, p.id::text, b.name as "bloggerName"
+      SELECT p.id::text, p.title, p."shortDescription", p.content, p."addedAt", p."bloggerId"::text, name as "bloggerName" 
       FROM posts p
       JOIN bloggers b ON p."bloggerId" = b.id
       ORDER BY p.id
@@ -26,17 +26,20 @@ export class PostsSQLRepository implements IPostRepository {
     return result;
   }
 
-  async getTotalCount(): Promise<number> {
+  async getTotalCount(filter: FilterQuery<PostEntity>): Promise<number> {
     const result = await this.postsRepository.query(`
       SELECT COUNT(*) FROM posts
+      WHERE "${Object.keys(filter)[0]}" = '${filter[Object.keys(filter)[0]]}'
     `);
-    return result[0].count;
+    return +result[0].count;
   }
 
   async getPostById(id: string): Promise<PostDBType | null> {
     const posts: PostDBType[] = await this.postsRepository.query(`
-      SELECT p.*, p.id::text FROM posts p
-      WHERE id = '${id}'
+      SELECT p.id::text, p.title, p."shortDescription", p.content, p."addedAt", p."bloggerId"::text, name as "bloggerName" 
+      FROM posts p 
+      JOIN bloggers b ON p."bloggerId" = b.id
+      WHERE p.id = ${id}
     `);
     if (!posts.length) {
       return null;
@@ -79,10 +82,12 @@ export class PostsSQLRepository implements IPostRepository {
     bloggerId: string,
     pageNumber: number,
     pageSize: number,
-  ): Promise<DBType<PostDBType>> {
+  ): Promise<PostDBType[]> {
     const conclusion = await this.postsRepository.query(`
-      SELECT * FROM posts
-      WHERE bloggerId = '${bloggerId}'
+      SELECT p.id::text, p.title, p."shortDescription", p.content, p."addedAt", p."bloggerId"::text, name as "bloggerName" 
+      FROM posts p 
+      JOIN bloggers b ON p."bloggerId" = b.id
+      WHERE p."bloggerId" = '${bloggerId}'
       ORDER BY id
       LIMIT ${pageSize}
       OFFSET ${(pageNumber - 1) * pageSize};`);

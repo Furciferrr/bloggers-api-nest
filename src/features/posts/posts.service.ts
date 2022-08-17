@@ -55,7 +55,7 @@ export class PostsService implements IPostService {
       pageSize || 10,
     );
 
-    const totalCount = await this.postRepository.getTotalCount();
+    const totalCount = await this.postRepository.getTotalCount({});
     const pagesCount = Math.ceil(totalCount / (pageSize || 10));
     const postsViewPromises = posts.map(async (post) => {
       const extendedLikesInfo = await this.buildExtendedLikesInfo(post?.id);
@@ -167,8 +167,8 @@ export class PostsService implements IPostService {
       pageNumber || 1,
       pageSize || 10,
     );
-    const { pagination, ...result } = resultPosts;
-    const postsViewPromises = result.items.map(async (post) => {
+
+    const postsViewPromises = resultPosts.map(async (post) => {
       const extendedLikesInfo = await this.buildExtendedLikesInfo(
         post.id,
         user?.id,
@@ -177,11 +177,14 @@ export class PostsService implements IPostService {
       return { ...rest, extendedLikesInfo };
     });
     const postsView = await Promise.all(postsViewPromises);
+
+    const totalCount = await this.postRepository.getTotalCount({ bloggerId });
+    const pagesCount = Math.ceil(totalCount / (pageSize || 10));
     return {
-      pagesCount: Math.ceil(pagination[0].totalCount / (pageSize || 10)),
+      pagesCount,
       page: pageNumber | 1,
       pageSize: pageSize || 10,
-      totalCount: pagination[0].totalCount,
+      totalCount: totalCount,
       items: postsView,
     };
   }

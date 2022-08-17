@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './entities/post.schema';
-import mongoose, { Model, ObjectId } from 'mongoose';
+import mongoose, { FilterQuery, Model, ObjectId } from 'mongoose';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { DBType } from 'src/types';
 import { IPostRepository } from './interfaces';
@@ -22,8 +22,8 @@ export class PostRepository implements IPostRepository {
       .lean();
   }
 
-  async getTotalCount(): Promise<number> {
-    return await this.postsCollection.countDocuments();
+  async getTotalCount(filter: FilterQuery<PostDocument> ): Promise<number> {
+    return await this.postsCollection.countDocuments(filter);
   }
 
   async getPostById(id: string): Promise<PostDBType | null> {
@@ -74,8 +74,8 @@ export class PostRepository implements IPostRepository {
     bloggerId: string,
     pageNumber: number,
     pageSize: number,
-  ): Promise<DBType<PostDBType>> {
-    const result = await this.postsCollection.aggregate([
+  ): Promise<PostDBType[]> {
+    /* const result = await this.postsCollection.aggregate([
       {
         $facet: {
           items: [
@@ -87,9 +87,15 @@ export class PostRepository implements IPostRepository {
           pagination: [{ $count: 'totalCount' }],
         },
       },
-    ]);
+    ]); */
+    const result = this.postsCollection
+      .find({ bloggerId })
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .select(['-__v', '-reactions'])
+      .lean();
 
-    return result[0] as DBType<PostDBType>;
+    return result;
   }
 
   async deleteAllPosts(): Promise<any> {
