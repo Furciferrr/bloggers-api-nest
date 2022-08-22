@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import ormConfig from '../src/ormConfig';
 import { UserEntity } from '../src/features/users/entities/user.entity';
 import { ConfigModule } from '@nestjs/config';
@@ -10,6 +10,7 @@ import { UsersModule } from '../src/features/users/users.module';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
+  let repository: Repository<UserEntity>;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -19,7 +20,10 @@ describe('UsersController (e2e)', () => {
         TypeOrmModule.forFeature([UserEntity]),
         ConfigModule,
       ],
-    }).compile();
+    })
+      .overrideProvider(Repository<UserEntity>)
+      .useValue(repository)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();

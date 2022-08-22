@@ -11,15 +11,15 @@ import {
   HttpCode,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { Request, Response } from 'express';
-import { Cookies } from 'src/decorators/cookie.decorator';
-import { User } from 'src/decorators/user.decorator';
-import { CreateUserDto } from 'src/features/users/dto/createUser.dto';
-import { UsersService } from 'src/features/users/users.service';
+import { Cookies } from '../../decorators/cookie.decorator';
+import { User } from '../../decorators/user.decorator';
+import { CreateUserDto } from '../../features/users/dto/createUser.dto';
+import { UsersService } from '../../features/users/users.service';
 import { AuthService } from './auth.service';
 import { ConfirmEmailDto, LoginUserDto, ResendEmailDto } from './dto/index.dto';
-import { MailSender } from 'src/adapters/email-adapter';
+import { MailSender } from '../../adapters/email-adapter';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('auth')

@@ -1,7 +1,7 @@
-import { LikeStatus } from 'src/features/reactions/types';
+import { LikeStatus } from '../../features/reactions/types';
 import { Injectable } from '@nestjs/common';
-import { getRandomNumber } from 'src/shared/utils';
-import { ResponseType } from 'src/types';
+import { getRandomNumber } from '../../shared/utils';
+import { ResponseType } from '../../types';
 import { UpdateLikeStatusDto } from '../posts/dto/update-likeStatus.dto';
 import { ReactionsService } from '../reactions/reactions.service';
 import { UserViewType } from '../users/types';

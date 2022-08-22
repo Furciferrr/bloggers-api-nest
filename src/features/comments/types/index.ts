@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongoose';
-import { LikeStatus } from 'src/features/reactions/types';
+import { LikeStatus } from '../../../features/reactions/types';
 
 export type CommentDBType = {
   _id: ObjectId;

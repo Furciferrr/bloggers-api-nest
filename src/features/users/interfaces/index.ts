@@ -1,4 +1,4 @@
-import { ErrorType, ResponseType, ServiceResponseType } from 'src/types';
+import { ErrorType, ResponseType, ServiceResponseType } from '../../../types';
 import { CreateUserDto } from '../dto/createUser.dto';
 import { UserDBType, UserViewType } from '../types';
 

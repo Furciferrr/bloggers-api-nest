@@ -7,7 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { IsNotBlank } from 'src/decorators/validate.decorator';
+import { IsNotBlank } from '../../../decorators/validate.decorator';
 
 export class UpdateBloggerDto extends PartialType(CreateBloggerDto) {
   @IsNotEmpty({ message: 'should be not empty' })

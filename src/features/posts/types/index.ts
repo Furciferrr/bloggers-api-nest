@@ -1,5 +1,5 @@
 import mongoose, { ObjectId } from 'mongoose';
-import { ReactionViewType, LikeStatus } from 'src/features/reactions/types';
+import { ReactionViewType, LikeStatus } from '../../../features/reactions/types';
 
 export interface PostDBType {
   id: string;

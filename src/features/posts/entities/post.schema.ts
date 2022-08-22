@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { Reaction } from 'src/features/reactions/entities/reaction.schema';
+import { Reaction } from '../../../features/reactions/entities/reaction.schema';
 import { PostDBType } from '../types';
 
 export type PostDocument = PostDBType & Document;

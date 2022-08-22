@@ -1,5 +1,5 @@
 import { IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
-import { IsNotBlank } from 'src/decorators/validate.decorator';
+import { IsNotBlank } from '../../../decorators/validate.decorator';
 
 export class CreateBloggerDto {
   @IsNotEmpty({ message: 'name field is required' })

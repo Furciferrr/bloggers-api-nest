@@ -14,8 +14,8 @@ import {
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { User } from 'src/decorators/user.decorator';
+import { AuthGuard } from '../../guards/auth.guard';
+import { User } from '../../decorators/user.decorator';
 import { UpdateLikeStatusDto } from '../posts/dto/update-likeStatus.dto';
 import { UserViewType } from '../users/types';
 

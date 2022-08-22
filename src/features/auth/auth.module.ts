@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/features/users/users.module';
+import { UsersModule } from '../../features/users/users.module';
 import { MailSender } from '../../adapters/email-adapter';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   RequestAttempt,
   RequestAttemptSchema,
 } from './entities/requestAttemption.schema';
-import { CountAttemptGuard } from 'src/guards/countAttemptions.guard';
+import { CountAttemptGuard } from '../../guards/countAttemptions.guard';
 
 @Module({
   imports: [

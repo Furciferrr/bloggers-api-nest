@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PostRepository } from 'src/features/posts/posts.repository';
-import { getRandomNumber } from 'src/shared/utils';
-import { ResponseType } from 'src/types';
+import { PostRepository } from '../../features/posts/posts.repository';
+import { getRandomNumber } from '../../shared/utils';
+import { ResponseType } from '../../types';
 import { BloggerRepository } from './bloggers.repository';
 import { CreateBloggerDto } from './dto/create-blogger.dto';
 import { UpdateBloggerDto } from './dto/update-blogger.dto';

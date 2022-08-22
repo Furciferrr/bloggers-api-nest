@@ -1,5 +1,5 @@
-import { UserViewType } from 'src/features/users/types';
-import { ResponseType } from 'src/types';
+import { UserViewType } from '../../../features/users/types';
+import { ResponseType } from '../../../types';
 import { CreateCommentDto } from '../dto/create-comment.dto';
 import { UpdateCommentDto } from '../dto/update-comment.dto';
 import { CommentDBType, CommentView } from '../types';

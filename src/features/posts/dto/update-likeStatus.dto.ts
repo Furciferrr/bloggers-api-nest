@@ -1,5 +1,5 @@
 import { IsIn } from 'class-validator';
-import { LikeStatus } from 'src/features/reactions/types';
+import { LikeStatus } from '../../../features/reactions/types';
 
 export class UpdateLikeStatusDto {
   @IsIn(['None', 'Like', 'Dislike'], {

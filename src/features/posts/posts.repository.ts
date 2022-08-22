@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Post, PostDocument } from './entities/post.schema';
 import mongoose, { FilterQuery, Model, ObjectId } from 'mongoose';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { DBType } from 'src/types';
 import { IPostRepository } from './interfaces';
 import { PostDBType } from './types';
 

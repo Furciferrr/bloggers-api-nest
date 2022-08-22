@@ -5,7 +5,6 @@ import { PostEntity } from './entities/post.entity';
 import { PostDBType } from './types';
 import { IPostRepository } from './interfaces';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { DBType } from 'src/types';
 
 @Injectable()
 export class PostsSQLRepository implements IPostRepository {

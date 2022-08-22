@@ -1,10 +1,10 @@
 import { PostDocument } from './../entities/post.schema';
 import { PostViewType } from './../types/index';
-import { ResponseType } from 'src/types';
+import { ResponseType } from '../../../types';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { PaginateType, PostDBType } from '../types';
-import { UserViewType } from 'src/features/users/types';
+import { UserViewType } from '../../../features/users/types';
 import { FilterQuery } from 'mongoose';
 import { FilterQuery as FilterQueryTypeOrm } from 'typeorm';
 

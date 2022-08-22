@@ -1,4 +1,4 @@
-import { ResponseType } from 'src/types';
+import { ResponseType } from '../../../types';
 import { CreateBloggerDto } from '../dto/create-blogger.dto';
 import { UpdateBloggerDto } from '../dto/update-blogger.dto';
 import { BloggerDBType } from '../types';
