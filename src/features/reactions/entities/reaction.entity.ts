@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -45,4 +46,47 @@ export class CommentReactionEntity {
     onDelete: 'CASCADE',
   })
   target: CommentEntity;
+}
+
+type GameStatus = 'PendingSecondPlayer' | 'InProgress' | 'Finished';
+
+@Entity('games')
+class GameEntity {
+  @PrimaryGeneratedColumn()
+  id: string;
+  status: GameStatus;
+  pairCreatedDate: Date;
+  startGameDate: Date;
+  finishGameDate: Date;
+}
+
+@Entity('players')
+class GamePlayerEntity {
+  @PrimaryGeneratedColumn()
+  id: string;
+  @ManyToOne(() => UserEntity, (user) => user.id)
+  user: UserEntity;
+  @Column({ select: false })
+  score: number;
+}
+
+@Entity('answers')
+class AnswerEntity {
+  @PrimaryGeneratedColumn()
+  id: string;
+  @OneToMany(() => GameEntity, (game) => game.id)
+  game: GameEntity[];
+  @ManyToOne(() => GamePlayerEntity, (player) => player.id)
+  playerId: string;
+  questionId: string;
+  answer: string;
+  answerStatus: boolean;
+  addedAt: Date;
+}
+
+@Entity('questions')
+class QuestionEntity {
+  id: string;
+  question: string;
+  answers: AnswerEntity[];
 }

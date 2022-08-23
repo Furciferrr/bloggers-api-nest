@@ -119,7 +119,7 @@ export class UsersService implements IUserService {
     };
     const result = await this.userRepository.createUser(newUser);
 
-    return { result, resultCode: 0 };
+    return { result: { ...newUser, id: result.id }, resultCode: 0 };
   }
 
   async confirmEmail(code: string): Promise<boolean> {

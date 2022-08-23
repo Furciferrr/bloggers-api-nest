@@ -10,6 +10,7 @@ import {
   HttpException,
   Put,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { BaseAuthGuard } from '../../guards/base-auth.guard';
 import { PostsService } from '../../features/posts/posts.service';
@@ -78,6 +79,7 @@ export class BloggersController {
     return;
   }
 
+  @HttpCode(204)
   @Delete(':id')
   @UseGuards(BaseAuthGuard)
   async remove(@Param('id') id: string) {

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpException,
   HttpStatus,
   Param,
@@ -34,8 +35,9 @@ export class UsersController {
     }
   }
 
+  @HttpCode(204)
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  //@UseGuards(AuthGuard)
   async deleteUserById(@Param('id') id: string) {
     const isRemoved = await this.userService.deleteUserById(id);
     if (!isRemoved) {

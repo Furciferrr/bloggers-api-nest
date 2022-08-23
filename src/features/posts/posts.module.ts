@@ -1,3 +1,4 @@
+import { BloggerRepository } from './../bloggers/bloggers.repository';
 import { CommentsModule } from './../comments/comments.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { PostsService } from './posts.service';

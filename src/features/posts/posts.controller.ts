@@ -73,6 +73,7 @@ export class PostsController {
     return this.postsService.update(id, updatePostDto);
   }
 
+  @HttpCode(204)
   @Delete(':id')
   @UseGuards(BaseAuthGuard)
   remove(@Param('id') id: string) {
