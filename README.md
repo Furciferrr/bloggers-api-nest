@@ -10,6 +10,7 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Vadim Setsko](https://twitter.com/vadimsetsko)
 
 <p>You need to add next variables:</p>
 <ul>
@@ -38,7 +39,9 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
 ```
+
 
 ## Test
 
@@ -52,9 +55,12 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 
+```
+
 ## Stay in touch
 
 - Author - [Vadim Setsko](https://twitter.com/vadimsetsko) Twitter
+
 
 ## License
 
