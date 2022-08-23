@@ -54,7 +54,7 @@ $ npm run test:cov
 
 ## Stay in touch
 
-- Author - [Vadim Setsko](https://twitter.com/vadimsetsko)
+- Author - [Vadim Setsko] <a href="https://twitter.com/vadimsetsko">Twitter</a>
 
 ## License
 
